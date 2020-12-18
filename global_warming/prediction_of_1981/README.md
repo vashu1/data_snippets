@@ -1,14 +1,14 @@
 40 years old global warming prediction and modern data.
 
-![climate](images/climate_1981_and_modern.png)
+![climate](images/climate_1981_and_modern.jpg)
 
 ## Code:
 
 See [code.py](code.py)
 
-Basically we use artifitial peaks at 1960, 1960, 2010, 2020 to calibrate fudge values that would combine graphs.
+Basically we use artificial peaks at 1960, 1960, 2010, 2020 to calibrate fudge values that would combine graphs.
 
-![calibration](images/climate_1981_calibration.png)
+![calibration](images/climate_1981_calibration.jpg)
 
 ## Sources:
 
