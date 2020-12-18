@@ -26,7 +26,7 @@ FIXED_YEARS = (YEARS[0]-10-0.5, YEARS[1]+3)
 ax.set_xlim(*FIXED_YEARS)
 ax.set_ylim(*TEMPS)
 
-img = mpimg.imread('climate_1980.jpg')
+img = mpimg.imread('images/climate_1981.jpg')
 
 imagebox = OffsetImage(img, zoom=0.3)
 ab = AnnotationBbox(imagebox, (sum(FIXED_YEARS)/2, sum(TEMPS)/2))
@@ -37,5 +37,5 @@ plt.grid()
 plt.plot(years, world_temp_anomalies, linewidth=1, zorder=10) # zorder to put it to foreground
 
 plt.draw()
-plt.savefig('climate_1980_and_modern.png',bbox_inches='tight')
+plt.savefig('climate_1981_and_modern.png',bbox_inches='tight')
 plt.show()
