@@ -1,0 +1,7 @@
+*.CSV # IP2LOCATION-LITE-DB1.CSV is not included
+*.csv
+*.ZIP
+*.zip
+*.png
+
+ipv4-heatmap
