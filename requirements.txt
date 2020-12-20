@@ -1,3 +1,4 @@
-netaddr
+numpy
 pandas
 matplotlib
+netaddr

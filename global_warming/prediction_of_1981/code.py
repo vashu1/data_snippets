@@ -1,4 +1,4 @@
-from matplotlib.offsetbox import TextArea, DrawingArea, OffsetImage, AnnotationBbox
+from matplotlib.offsetbox import OffsetImage, AnnotationBbox
 
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg

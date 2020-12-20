@@ -1,7 +1,9 @@
+#!/usr/bin/env bash
+
 # get ip db with wget
 # or download it manually from https://ip2location.com (Free/Lite DB)
 wget https://download.ip2location.com/lite/IP2LOCATION-LITE-DB1.CSV.ZIP
-unzip IP2LOCATION-LITE-DB1.CSV.ZIP
+unzip -o IP2LOCATION-LITE-DB1.CSV.ZIP
 rm README_LITE.TXT
 rm LICENSE-CC-BY-SA-4.0.TXT
 
