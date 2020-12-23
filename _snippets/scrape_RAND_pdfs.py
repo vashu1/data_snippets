@@ -1,4 +1,4 @@
-# scrape articles from RAND site
+# scrape articles from RAND site, see https://vashu11.livejournal.com/20523.html
 import re
 import requests
 from bs4 import BeautifulSoup
