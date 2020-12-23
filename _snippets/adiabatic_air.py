@@ -1,4 +1,4 @@
-# heating of air with adiabatic compression
+# heating of air with adiabatic compression, see https://www.popadancev.net/promyshlennyj-vodostrujnyj-kompressor/#comment-153387
 import scipy.optimize
 
 Tstart = 10+273.15 # 10 C
