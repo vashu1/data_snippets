@@ -1,4 +1,7 @@
 numpy
+scipy
 pandas
 matplotlib
-netaddr
+netaddr # network address manipulation library
+bs4 # BeatifulSoup
+mpmath # arithmetic with arbitrary precision
