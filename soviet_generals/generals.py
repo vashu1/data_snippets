@@ -1,3 +1,4 @@
+# https://vashu11.livejournal.com/17726.html
 import urllib2
 from bs4 import BeautifulSoup
 

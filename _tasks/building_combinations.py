@@ -29,16 +29,23 @@ def combinations(N):
 def combinations2(N):
 	# if N <= 0:
 	#	raise ValueError(f'N should be positive {N}')
-	if N <= 2:
-		return [0, 1, 2][N]
-	ending1 = [0] * (N+1)
-	ending2 = [0] * (N+1)
-	ending1[:3] = [0, 1, 1]
-	ending2[:3] = [0, 0, 1]
+	ending1 = [0, 1, 1] + [0] * (N-2)
+	ending2 = [0, 0, 1] + [0] * (N-2)
 	for indx in range(3, N+1):
 		ending1[indx] = ending1[indx-2] + ending2[indx-2] + ending2[indx-1]
 		ending2[indx] = ending1[indx-2] + ending2[indx-2]
-	return ending1[-1] + ending2[-1]
+	return ending1[N] + ending2[N]
+
+"""
+ending1 = [0, 1, 1]
+ending2 = [0, 0, 1]
+data = list(zip(ending1, ending2))
+for indx in range(3, N+1):
+	ending1 = data[indx-2][0] + data[indx-2][1] + data[indx-1][1]
+	ending2 = data[indx-2][0] + data[indx-2][1]
+	data.append((ending1, ending2))
+return sum(data[N])
+"""
 
 def test(N, correct):
 	result = combinations(N)
