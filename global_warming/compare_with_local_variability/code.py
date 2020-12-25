@@ -1,3 +1,4 @@
+# see https://vashu11.livejournal.com/20302.html
 import os
 import functools
 import operator

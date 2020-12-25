@@ -1,4 +1,6 @@
-# add strings as binary
+# add strings as binary, without using numbers
+
+invert = lambda digit: '0' if digit == '1' else '1'
 
 def add(a: str, b: str) -> str:
     res = []
@@ -11,9 +13,9 @@ def add(a: str, b: str) -> str:
             res.append(carry_flag)
             carry_flag = n1
         else: # 10 or 10 cases
-            res.append('0' if carry_flag == '1' else '1')
+            res.append(invert(carry_flag))
     if carry_flag == '1': # add carry if it is set
-        res.append('1')
+        res.append(carry_flag)
     return ''.join(reversed(res)) # reverse and join to str
 
 assert add('0', '0') == '0'
