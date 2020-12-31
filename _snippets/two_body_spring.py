@@ -1,4 +1,5 @@
 # generate animation of elastic merge of bodies
+# https://vashu11.livejournal.com/5991.html
 from common.graphics import *
 from PIL import ImageGrab
 import time
@@ -36,11 +37,11 @@ first.draw(win)
 second = Circle(Point(secondPos, lineY), math.sqrt(secondWeight))
 second.setFill('red')
 second.draw(win)
-	
+
 def drawScene():
 	global spring, first, firstPos, second, secondPos
 	spring.undraw()
-	
+
 	first.move(firstSpeed, 0)
 	firstPos += firstSpeed
 	second.move(secondSpeed, 0)
@@ -69,7 +70,6 @@ while(secondPos < winWidth):
 	force = springDelta * rigidity
 	firstSpeed -= force / firstWeight
 	secondSpeed += force / secondWeight
-	
 	drawScene()
 	#images.append(ImageGrab.grab(cropArea))
 	ImageGrab.grab(cropArea).save('screenshot'+ str(i) +'.png')
@@ -77,13 +77,12 @@ while(secondPos < winWidth):
 	time.sleep(tick)
 	if i>10160:
 		break;
-	
 
 
 
 #im.save('screenshot.png') # self.__crop = x0, y0, x1, y1
 #writeGif('screenshot.gif', images, tick, True, False, 0, False, None)
-#convert -delay 10 -loop 0 *png animated.gif    from ImageMagick 
+#convert -delay 10 -loop 0 *png animated.gif    from ImageMagick
 
 #exit()
 os.system("convert -loop 0 *png animated.gif")
