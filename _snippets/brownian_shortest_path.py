@@ -1,4 +1,8 @@
 # create lots of browninan particles, then show path of one that reached the target first
+# see
+# https://www.dropbox.com/s/1mnl1ximtuuwq9t/brownian_path.gif?dl=0
+# https://www.dropbox.com/s/3iylrdio4tvt3bb/brownian_path_target.gif?dl=0
+# https://www.dropbox.com/s/6tj1tg5nbt3ibg0/brownian_path_target2.gif?dl=0
 from common.graphics import *
 from PIL import ImageGrab
 import time

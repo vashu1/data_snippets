@@ -1,4 +1,4 @@
-# draw radial color diagram
+# draw radial color diagram https://www.dropbox.com/s/gpwpvv6lwa9yn7s/homer_colors.png?dl=0
 from common.graphics import *
 import math
 
