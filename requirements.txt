@@ -6,3 +6,4 @@ netaddr # network address manipulation library
 bs4 # BeatifulSoup
 mpmath # arithmetic with arbitrary precision
 Pillow # Python Imaging Library
+openpyxl # support for ".xlsx" format
