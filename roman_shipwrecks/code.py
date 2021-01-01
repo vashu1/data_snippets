@@ -3,6 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import math
 from functools import reduce
+from mpl_toolkits.basemap import Basemap
 
 # get dataset
 if not os.path.exists('StraussShipwrecks.zip'):
@@ -54,4 +55,31 @@ table = table.fillna(0)
 
 table.plot()
 plt.savefig('table.png',bbox_inches='tight')
+plt.show()
+
+# draw coordinates on map
+
+# df['Longitude'].value_counts()  Length: 269
+
+fig, axs = plt.subplots(1, 1, figsize=(10,10))
+x1 = -10 # Mediterranean Sea
+x2 = 37
+y1 = 30
+y2 = 46
+
+# resolution = c (crude), l (low), i (intermediate), h (high), f (full) or None.
+# projection = list(mpl_toolkits.basemap.projection_params.keys())
+bmap = Basemap(resolution='i', projection='merc', llcrnrlat=y1, urcrnrlat=y2, llcrnrlon=x1, urcrnrlon=x2)
+bmap.drawcoastlines(linewidth=0.5) # m.drawcountries(linewidth=0.5)
+
+# fig.clear()
+for index, row in df.iterrows():
+    lo, la = row['Longitude'], row['Latitude']
+    if not (lo > 0 and la > 0):
+        continue
+    c = 'green' if row['mid_date'] < 200 else 'red'
+    _ = plt.plot(*bmap(lo, la), 'ok', color=c, markersize=1)
+
+plt.tight_layout()
+plt.savefig('map.png', dpi=300, bbox_inches='tight')
 plt.show()

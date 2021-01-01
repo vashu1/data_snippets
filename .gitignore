@@ -1,6 +1,7 @@
 .DS_Store
 .idea/*
 env
+basemap
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
