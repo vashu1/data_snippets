@@ -9,6 +9,8 @@
 
 # more https://www.icpsr.umich.edu/web/ICPSR/series/00059 https://libguides.princeton.edu/elections#s-lg-box-24284525
 
+
+
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -26,7 +28,7 @@ def get_2000():
 	df = pd.read_csv('archive/president_county_candidate.csv')
 	biden = df[df.candidate == 'Joe Biden']   .groupby(['state']).sum().reset_index()
 	trump = df[df.candidate == 'Donald Trump'].groupby(['state']).sum().reset_index()
-	total = pd.read_csv('archive/president_state.csv') # 
+	total = pd.read_csv('archive/president_state.csv') #
 	biden = pd.merge(biden, total,on='state')
 	trump = pd.merge(trump, total,on='state')
 	biden['party'] = 'democrat'
@@ -91,5 +93,3 @@ plt.show()
 
 
 Dr. Mark Rowe
-
-
