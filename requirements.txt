@@ -7,3 +7,5 @@ bs4 # BeatifulSoup
 mpmath # arithmetic with arbitrary precision
 Pillow # Python Imaging Library
 openpyxl # support for ".xlsx" format
+squarify # treemap charts
+colour # utils for handling RGB colors
