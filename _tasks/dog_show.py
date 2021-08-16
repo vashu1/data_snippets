@@ -100,3 +100,20 @@ for s in results:
 print(set(a))
 print(set(c))
 # set(['DdAd', 'AdDd'])
+
+"""
+sympy logical reasosning
+https://docs.sympy.org/latest/modules/logic.html
+
+ function1 = SOPform([x, z, y],[[1, 0, 1], [0, 0, 1]])
+ 
+ >>> minterms = [[0, 0, 0, 1], [0, 0, 1, 1],
+...             [0, 1, 1, 1], [1, 0, 1, 1], [1, 1, 1, 1]]
+dontcares = [0, 2, 5]
+SOPform([w, x, y, z], minterms, dontcares)
+
+$ cat _python_snippets/SAT_solver.py
+https://habr.com/ru/post/440092/
+https://colab.research.google.com/drive/1Fk4Vncc3Q9Ghxu1Of9Y8KUtlHPqPYymV
+https://github.com/z3prover/z3
+"""
