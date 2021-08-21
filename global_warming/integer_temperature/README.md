@@ -1,0 +1,1 @@
+Can we restore precise average year temperature based on readings of thermometer without decimals?
