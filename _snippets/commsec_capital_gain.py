@@ -67,13 +67,14 @@ def extract(fname):  # extract transaction from contract file
 data = defaultdict(list)
 for root, subdirs, files in os.walk('./'):  # process all contract files
     for fname in files:
-        if fname.startswith('Contract ') and :
+        if fname.startswith('Contract '):
             if not root.endswith('/'):
                 root += '/'
             res = extract(root + fname)
             for date, share, tp, unit, price in res:
                 if root != './':  # we assume contracts are placed in directory with asset name (or just lay in the root)
-                    assert (root[2:] == share)
+                    print(root[2:], share)
+                    assert (root[2:-1] == share)
                 data[share]+=[(date, tp, unit, price)]
 
 for sh in data:
