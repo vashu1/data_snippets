@@ -4,6 +4,11 @@ This utility extracts Google Drive ids of the dataset and saves them to file:
 2019-09-19_to_172.31.21.94.pcap 1ml5YyJytCiQKNus1Wt0hIGfTt-HnpxqW
 2019-09-20_to_172.31.21.94.pcap 1ei7QuuqNkTwTDp5b_sN0C5C2Y6J8X92x
 
+pip requirements:
+google-api-python-client
+google-auth-httplib2
+google-auth-oauthlib
+
 How configure credentials - https://developers.google.com/drive/api/v3/quickstart/python
 
 How to download:
