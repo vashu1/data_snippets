@@ -3,6 +3,11 @@ import random
 TODO
 rectangle board?
 pack (mines, visible, flags) to GameState() ?
+
+# lazy state
+from collections import namedtuple, defaultdict
+state = defaultdict(lambda: defaultdict(lambda: namedtuple('Cell', ['mine', 'visible', 'flag'], defaults=[random.random() < MINE_PROBABILITY, False, False])))
+need to keep size separately, no bound control (
 """
 
 MINE_PROBABILITY = 0.2
