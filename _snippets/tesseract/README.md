@@ -57,6 +57,8 @@ https://habr.com/ru/news/t/578832/comments/#comment_23499710
         
     })()
 
+plus python selenium.webdriver and pytesseract https://github.com/strayge/web_ocr
+
 ### Links:
 
 Hints
