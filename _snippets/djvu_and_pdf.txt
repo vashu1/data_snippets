@@ -1,0 +1,14 @@
+brew install djvulibre
+# add leading zeroes
+for i in `ls | grep ^..jpg` ; do echo $i ; mv $i 00$i ; done
+for i in `ls | grep ^...jpg` ; do echo $i ; mv $i 0$i ; done
+
+rm *.djvu
+for i in `ls | grep jpg | sort` ; do echo $i ; c44 $i ; done
+
+djvm -c ../result.djvu *.djvu
+ddjvu -format=pdf ../result.djvu  ../result.pdf
+
+https://www.pdf2go.com/djvu-to-pdf
+
+use https://dl.dropboxusercontent.com
