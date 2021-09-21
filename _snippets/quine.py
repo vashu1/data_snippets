@@ -1,0 +1,1 @@
+s = "s = # ; print(f'{s}'.replace('#', '\"' + s.replace(chr(34), chr(92) + chr(34)) + '\"', 1))" ; print(f'{s}'.replace('#', '"' + s.replace(chr(34), chr(92) + chr(34)) + '"', 1))
