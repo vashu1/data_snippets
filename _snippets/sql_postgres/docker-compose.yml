@@ -18,3 +18,5 @@ services:
           - ./sql/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
           # copy the sql script to fill tables
           - ./sql/fill_tables.sql:/docker-entrypoint-initdb.d/fill_tables.sql
+          - ./sql/northwind.sql:/northwind/northwind.sql
+          - ./sql/northwind-fix.sql:/northwind/northwind-fix.sql

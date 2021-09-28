@@ -27,7 +27,16 @@ for x in range(SIZE):
         if dist < SIZE/2.2:
             angle = vector_angle(xx, yy)
             sector_number = int(len(COLORS) * angle / 360.1)
-            win.create_line(x, y, x + 1, y, fill=COLORS[sector_number])
+            # color = COLORS[sector_number]
+            if sector_number%3==0:
+                color = _from_rgb(0,0,128)
+            else:
+                c = dist/SIZE*2.2 * 255
+                if sector_number%3==1:
+                    color = _from_rgb(c,0,0)
+                else:
+                    color = _from_rgb(0, 255 - c, 0)
+            win.create_line(x, y, x + 1, y, fill=color)
 
 win.getMouse()
 
