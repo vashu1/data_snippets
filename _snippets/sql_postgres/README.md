@@ -120,7 +120,7 @@ or run `\c northwind` after `./connect.sh`
     FROM categories; /* \d categories */
 
 
-3. FirstName, LastName, and HireDate of all the employees with the Title of Sales Representative. 
+3. FirstName, LastName, and HireDate of all the employees with the Title of Sales Representative.
 
 
     SELECT FirstName, LastName, HireDate
@@ -265,22 +265,91 @@ Show only those rows with an OrderID of less than 10300.
 
 ### Intermediate Problems
 
-20. s
-21. s
-22. s
-23. s
-24. s
-25. s
-26. s
-27. s
-28. s
-29. s
-30. s
-31. s
-32. s
+20. Total number of products in each category.
+Sort the results by the total number of products.
+
+
+    SELECT categoryname, COUNT(*) AS total
+    FROM Products
+    JOIN Categories
+    ON Products.categoryid = Categories.categoryid
+    GROUP BY Categories.categoryname
+    ORDER BY total DESC;
+
+21. Show the total number of customers per Country and City.
+
+
+    SELECT Country, City, COUNT(*)
+    FROM Customers
+    GROUP BY Country, City;
+
+22. What products do we have in our inventory that should be reordered?
+For now, just use the fields UnitsInStock and ReorderLevel, where UnitsInStock is less than the ReorderLevel, ignoring the fields UnitsOnOrder and Discontinued.
+Order the results by ProductID.
+
+
+    SELECT ProductId, ProductName, UnitsInStock, ReorderLevel
+    FROM Products
+    WHERE UnitsInStock < ReorderLevel
+    ORDER BY ProductID;
+
+23. Prev + define “products that need reordering” with the following:
+UnitsInStock plus UnitsOnOrder are less than or equal to ReorderLevel
+The Discontinued flag is false (0).
+
+
+    SELECT ProductId, ProductName, UnitsInStock, ReorderLevel
+    FROM Products
+    WHERE (UnitsInStock + UnitsOnOrder) <= ReorderLevel AND Discontinued = 0
+    ORDER BY ProductID;
+
+24. A list of all customers, sorted by region, alphabetically.
+Customers with no region (null in the Region field) to be at the end, instead of at the top, where you’d normally find the null values.
+Within the same region, companies should be sorted by CustomerID.
+
+
+    SELECT customerid, Region FROM Customers
+    ORDER BY Region, CustomerID;
+
+or reverse
+
+    SELECT customerid, Region FROM Customers
+    ORDER BY
+    (CASE
+        WHEN Region IS NULL THEN 0
+        ELSE 1
+    END), Region, CustomerID;
+
+25. Return the three ship countries with the highest average freight overall,
+ in descending order by average freight.
+
+
+    SELECT ShipCountry, AVG(freight) AS AvgFreight
+    FROM Orders
+    GROUP BY ShipCountry
+    ORDER BY AvgFreight DESC
+    LIMIT 3;
+
+26. Prev + we only want to see orders from the year 2015.
+
+
+    WHERE extract(year from OrderDate) = 2015
+
+or
+
+    WHERE date_part('year', OrderDate) = 2015
+
+27. High freight charges with between.
+
+
+28. High freight charges - last year.
+29. Inventory list.
+30. Customers with no orders.
+31. Customers with no orders for EmployeeID 4.
 
 ### Advanced Problems
 
+32. s
 33. s
 34. s
 35. s

@@ -8,6 +8,20 @@ COLORS = ['red', 'green', 'blue'] * 9
 win = GraphWin("", SIZE, SIZE, True)
 
 
+rgb_scale = 255
+cmyk_scale = 100
+
+# Попробуйтся для начала два цвета.  https://www.popadancev.net/ultramarin/comment-page-1/#comment-161817
+# белый из трех?
+
+def cmyk_to_rgb(c,m,y,k):
+    # https://stackoverflow.com/questions/14088375/how-can-i-convert-rgb-to-cmyk-and-vice-versa-in-python
+    r = rgb_scale*(1.0-(c+k)/float(cmyk_scale))
+    g = rgb_scale*(1.0-(m+k)/float(cmyk_scale))
+    b = rgb_scale*(1.0-(y+k)/float(cmyk_scale))
+    return r,g,b
+
+
 def vector_angle(x, y):  # 0-360
     angle =  np.arctan2(y, x) / np.pi * 180  # +-180 degrees
     return angle if angle > 0 else 360 + angle
