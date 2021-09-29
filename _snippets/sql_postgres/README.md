@@ -341,15 +341,84 @@ or
 
 27. High freight charges with between.
 
+does not apply
 
 28. High freight charges - last year.
-29. Inventory list.
-30. Customers with no orders.
-31. Customers with no orders for EmployeeID 4.
+
+
+    SELECT ShipCountry, AVG(freight) AS AvgFreight
+    FROM Orders
+    WHERE OrderDate > (SELECT MAX(OrderDate) - INTERVAL '1 year' FROM Orders)
+    GROUP BY ShipCountry
+    ORDER BY AvgFreight DESC
+    LIMIT 3;
+
+
+30. Inventory list.
+
+
+    SELECT Employees.EmployeeID, LastName, Orders.OrderID, ProductName, Quantity
+    FROM Employees
+    JOIN Orders
+    ON Employees.employeeid = Orders.employeeid
+    JOIN order_details
+    ON Orders.orderid = order_details.orderid
+    JOIN Products
+    ON Products.productid = order_details.productid
+    ORDER BY Orders.OrderID, Products.productid;
+
+31. Customers with no orders.
+
+
+    SELECT Customers.CustomerId
+    FROM Customers
+    LEFT JOIN Orders
+    ON Orders.CustomerId = Customers.CustomerId
+    WHERE Orders.OrderId IS NULL;
+
+32. Customers with no orders for EmployeeID 4.
+
+
+    SELECT Customers.CustomerId
+    FROM Customers
+    LEFT JOIN (SELECT OrderId, CustomerId FROM Orders WHERE Orders.EmployeeID = 4) AS CustomersOfEmployee
+    ON Customers.CustomerId = CustomersOfEmployee.CustomerId
+    WHERE CustomersOfEmployee.OrderId IS NULL;
+
+Note that with outer joins, the filters on the where clause are applied after the join.
 
 ### Advanced Problems
 
-32. s
+32. High-value customers.
+
+We want to send all of our high-value customers a special VIP gift.
+We're defining high-value customers as those who've made at least
+1 order with a total value (not including the discount) equal to $10,000 or more.
+We only want to consider orders made in the year 1996.
+
+
+    SELECT CustomerId, OrderId, SUM(Total)
+    FROM (
+    SELECT DatedOrders.CustomerId, DatedOrders.OrderId, Order_Details.UnitPrice * Order_Details.Quantity AS Total
+    FROM (SELECT * FROM Orders WHERE date_part('year', OrderDate) = 1996) AS DatedOrders
+    JOIN Order_Details
+    ON DatedOrders.OrderId = Order_Details.OrderId
+    ) AS subq GROUP BY OrderId, CustomerId
+    HAVING SUM(Total) > 10000;
+
+---
+
+    SELECT Customers.CustomerID, Orders.OrderId, SUM(Order_Details.UnitPrice * Order_Details.Quantity)
+    FROM Customers
+    JOIN Orders
+    ON Orders.CustomerId = Customers.CustomerId
+    JOIN Order_Details
+    ON Orders.OrderId = Order_Details.OrderId
+    WHERE date_part('year', OrderDate) = 1996
+    GROUP BY Customers.CustomerID, Orders.OrderId
+    HAVING SUM(Order_Details.UnitPrice * Order_Details.Quantity) > 10000
+    ORDER BY SUM(Order_Details.UnitPrice * Order_Details.Quantity) DESC;
+
 33. s
 34. s
 35. s
