@@ -158,13 +158,14 @@ Or run "Balance" subquery once and calculate the rest as sum of deltas.
 
 
     WITH CustomerTwoLastVisits AS (
-        SELECT Cust_Id, (LEAD(Visit_Date, 0) OVER w) LastDate, (LEAD(Visit_Date, 1) OVER w) NextDate
+        SELECT DISTINCT ON(Cust_Id) Cust_Id, (LAG(Visit_Date, 0) OVER w) LastDate, (LAG(Visit_Date, 1) OVER w) NextDate
         FROM Fact_Centre_Txn
         WINDOW w AS (PARTITION BY Cust_Id ORDER BY Cust_Id, Visit_Date)
-        LIMIT 100)
-    SELECT AVG(NextDate - LastDate)
+        ORDER BY Cust_Id, Visit_Date DESC)
+    SELECT AVG(LastDate - NextDate)
     FROM CustomerTwoLastVisits
-    WHERE NextDate IS NOT NULL;
+    WHERE NextDate IS NOT NULL
+    LIMIT 100;
 
 We assume that customers with single visit are not included in the calculation of the average.
 
