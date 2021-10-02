@@ -1,0 +1,54 @@
+For task description see "./Coding Exercise 1.pdf" file.
+
+=== Comments
+
+At first I implemented simplest solution, based on algorithm for finding
+connected components in graph.
+
+(see images/components_v1.py)
+
+Performance was not pretty - 2-3 seconds per MB, and numba didn't help much, so
+I implemented images/components_v2.py - see description in file.
+
+The second version with numba processes 1 MB in 0.06 seconds.
+
+Pretty sure I could transfer it to C and make it faster, but I guess my time 
+is running out.
+
+=== Assumptions.
+
+1. It is not specified explicitly in task description if in ".bin" file we get a
+set of lines or columns. Since in "sample.bin" we get a set of lines, I read lines.
+
+2. Description says "We should be able to run your code as ... count-areas".
+I am quite sure it should be "./count-areas" as nobody would want to install it,
+but if I am wrong - see "Installation" section.
+
+=== Running in Docker.
+
+cd count-areas
+
+# copy your bin files in current dir or mount their folder later
+
+docker build --tag count-areas .
+docker run -it count-areas /bin/bash
+
+count-areas images/resources/sample.bin --shape 256,256
+
+=== Run from local directory - should work with Python 3.7.7
+
+# Install requirements
+cd count-areas
+
+pip3 install -r requirements.txt
+
+./count-areas images/resources/sample.bin --shape 256,256
+
+=== Installation.
+
+cd count-areas
+python3 setup.py install
+
+=== Testing.
+
+Run ./test for unit tests.

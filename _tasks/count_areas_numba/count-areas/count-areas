@@ -1,0 +1,57 @@
+#!/usr/bin/env python3
+'''
+Count number of colored areas in an image.
+
+Input: file with grey-scale image represented as a 2-dimensional array of unsigned bytes.
+
+Output: array of 256 unsigned int numbers, each of them being a count of areas
+colored with the corresponding shade of grey.
+'''
+import argparse
+import errno
+import images.components_v2
+import numpy as np
+import os
+import sys
+
+def print_error_and_exit(error_msg):
+    """ Print error_msg to stderr and exit with error code 1."""
+    sys.stderr.write(f'ERROR! {error_msg}\n')
+    sys.exit(1)
+
+def load_greyscale_bitmap(args):
+    """Check that "greyscale_bitmap" and "--shape" arguments valid and load data from file into accordingly shaped numpy array."""
+    height = width = 0
+    try:
+        height, width = map(int, args.shape.split(',')) # try to decode --shape parameter
+    except:
+        print_error_and_exit(f'Bad "--shape" parameter value - "{args.shape}", should look like "int,int" i.e. "640,640"')
+    greyscale_bitmap = None
+    try:
+        with open(args.greyscale_bitmap, 'rb') as file:
+            greyscale_bitmap = np.frombuffer(file.read(), dtype = np.uint8)
+    except IOError as x:
+        if   x.errno == errno.ENOENT:
+            print_error_and_exit(f'File "{args.greyscale_bitmap}" does not exist.')
+        elif x.errno == errno.EACCES:
+            print_error_and_exit(f'No access to "{args.greyscale_bitmap}" file.')
+        else:
+            print_error_and_exit(x)
+    try: # put shape data in bitmap
+        return greyscale_bitmap.reshape((height, width))
+    except:
+        print_error_and_exit('Shape and bin file size do not match.')
+
+# parse arguments
+parser = argparse.ArgumentParser(description = __doc__)
+parser.add_argument('greyscale_bitmap', type = str,
+    help = 'A grey-scale image file represented as a 2-dimensional array of unsigned bytes.')
+parser.add_argument('--shape', type = str, required = True,
+    help = 'Comma-separated "height,width" of image, i.e. "--shape 256,256"')
+
+args = parser.parse_args()
+bitmap = load_greyscale_bitmap(args) # load bitmap from file and output user friendly message if error happens
+
+component_colours = images.components_v2.get_image_colours_component_count(bitmap) # split bitmap into Counter({colour: count})
+for colour in range(256): # output component counts for all 256 colours
+    print(component_colours[colour])
