@@ -820,6 +820,13 @@ https://github.com/search?q=SQL+Practice+Problems+57
 
 ---
 
+## sql-ex.ru
+
+https://www.sql-ex.ru/
+https://www.w3resource.com/sql-exercises/
+
+---
+
 Tally table is, but to make a long story short it is simply a table that has one integer column that is a sequential number from 1 to n, n being the number of rows you need.
 MS only?
 
