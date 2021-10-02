@@ -1,4 +1,3 @@
-# get game servers from gametracker
 from bs4 import BeautifulSoup
 import requests
 
