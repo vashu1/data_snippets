@@ -1,0 +1,89 @@
+=========== *.m files contents
+
+$ cat avg_data.m
+function refl = avg_data(files);
+if size(files, 2) == 1
+  files = files'
+end
+sumf = zeros([180,288])
+for fname = files
+  fi = load(fname)
+  fi.data(isnan(fi.data))=0
+  sumf = sumf + fi.data
+end
+
+sumf = sumf / length(files)
+
+refl = refl_struct(sumf,fi.start_time,fi.stop_time,fi.type)
+return
+
+$ cat avg_alb.m
+function alb = avg_alb(refl);
+alb = arrayfun(@(x) earthshine(refl, x), 1:360)
+return
+
+$ cat earthshine.m
+function alb = earthshine(refl, degrees);
+sunWidth = pi/4
+satShift = pi - sunWidth
+f = degrees * pi/180 - pi / 2 + sunWidth / 2
+earthR = 6371 * 1000
+satH = 400*1000*1000 + earthR
+sunH = 150*1000*1000*1000
+sat = [cos(f+satShift)*satH,sin(f+satShift)*satH,0]
+sun = [cos(f)*sunH,sin(f)*sunH,0]
+a = albedo(sat, sun, refl) % 's' 'p')
+alb = sum(sum(a))
+return
+
+
+=========== Mathlab
+
+>> files = [ "ga050120.mat"
+, "ga050209.mat"
+, "ga050301.mat"
+, "ga050321.mat"
+, "ga050410.mat"
+, "ga050430.mat"
+, "ga050520.mat"
+, "ga050609.mat"
+, "ga050629.mat"
+, "ga050719.mat"
+, "ga050808.mat"
+, "ga050828.mat"
+, "ga050917.mat"
+, "ga051007.mat"
+, "ga051027.mat"
+, "ga051116.mat"
+, "ga051206.mat"
+, "ga051226.mat"]
+>>
+>> files2 = [
+, "ga050110.mat"
+, "ga050130.mat"
+, "ga050219.mat"
+, "ga050311.mat"
+, "ga050331.mat"
+, "ga050420.mat"
+, "ga050510.mat"
+, "ga050530.mat"
+, "ga050619.mat"
+, "ga050709.mat"
+, "ga050729.mat"
+, "ga050818.mat"
+, "ga050907.mat"
+, "ga050927.mat"
+, "ga051017.mat"
+, "ga051106.mat"
+, "ga051126.mat"
+, "ga051216.mat"]
+>>
+>> refl = avg_data(files)
+>> refl2 = avg_data(files2)
+>> a = avg_alb(refl)
+>> a2 = avg_alb(refl2)
+>>
+>> plot(circshift(a,180));
+hold on;
+plot(circshift(a2,180))
+
