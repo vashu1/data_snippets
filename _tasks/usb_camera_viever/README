@@ -1,0 +1,111 @@
+=== Why OpenCV and libuvc(+ uvclight wrapper) are used.
+
+After minimal investigation I found little snippet in OpenCV(python) that allows to show camera video
+very easily.
+
+But OpenCV allows only access cameras via some obscure "index", not USB VID/PID :( Some search showed 
+that there is a request for something less obscure, and after taking a look at OpenCV sources I got why 
+that request is still not satisfied.
+
+Some extra search got "libusb" in my sights, that promised cross-platform capability unlike other 
+solutions that I saw. I also found a couple of python wrappers for it - "pyuvc" and "uvclight". "pyuvc" 
+uses old version of "libusb" and does not work with my camera, so I used "uvclight" wrapper.
+
+Had to modify it a little, so I included modivied version.
+
+To see changes just run "cd task/uvclite/ ; git diff"
+
+=== Prerequisites.
+
+Python 3.8(should work with 3.6) and pip3.
+
+=== Ubuntu
+
+# I just run everything from sudo on throwaway VM.
+
+cd task/
+
+# opencv-python and psutil
+sudo pip3 install opencv-python
+sudo pip3 install psutil
+
+#libuvc
+sudo apt-get install -y libusb-1.0
+sudo apt install git
+sudo apt install cmake
+git clone https://github.com/libuvc/libuvc
+cd libuvc
+mkdir build
+cd build
+cmake ..
+make && sudo make install
+cd ../..
+sudo cp /usr/local/lib/libuvc.so /usr/lib/libuvc.so
+
+#uvclite
+cd uvclite
+sudo python3 setup.py install --user
+cd ..
+
+# RUN
+lsusb
+...
+Bus 001 Device 005: ID 1908:2310 GEMBIRD USB2.0 PC CAMERA
+ 
+sudo python3 usb_camera_viewer.py -v 1908 -p 2310 -d 10
+
+=== OSX
+
+cd task/
+
+pip3 install opencv-python
+pip3 install psutil
+
+git clone https://github.com/libuvc/libuvc
+cd libuvc
+mkdir build
+cd build
+cmake ..
+make && sudo make install
+
+ln -s /usr/local/lib/libuvc.0.0.6.dylib /usr/local/lib/libuvc.so
+python3 setup.py install --user --prefix=
+
+cd uvclite
+python3 setup.py install --user --prefix=
+cd ..
+
+lsusb
+...
+Bus 020 Device 006: ID 1908:2310 1908 USB2.0 PC CAMERA 
+
+python3 usb_camera_viewer.py -v 1908 -p 2310 -d 10
+
+=== Windows
+
+libusb creator brags that it is "Tested on Mac and Linux, 
+portable to Windows and some BSDs" so in theory this app
+has complete portability.
+
+I could not run it on OSX Mojave :-(
+
+
+
+And my USB camera could not connect to Windows VM for some reason
+so I could not try Windows out.
+
+Well, there is version of libusb that author says works on Windows:
+https://github.com/JoshBlake/libusbx/
+
+=== Assumptions.
+
+Nobody closes window with Ctrl-C so I guess it is about terminal,
+window can be closed the usual way.
+
+vid pid are hex since lsusb returns them
+USB vendor IDs (VID) and product IDs (PID) are 16-bit numbers
+all params are required(I guess delay could be optional)
+save the following metadata in a json:date - pretty sure you meant date and time, but you get what you asked for :-P
+metadata are not saved if there are no data from camera as they are saved with frames
+
+
