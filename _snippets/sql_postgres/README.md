@@ -14,6 +14,22 @@ psql -U postgres postgres < /docker-entrypoint-initdb.d/create_tables.sql
 psql -U postgres postgres < /docker-entrypoint-initdb.d/fill_tables.sql 
 
 #
+
+SQLAlchemy insides https://habr.com/ru/company/domclick/blog/581304/
+
+#
+
+blocking concurrency
+
+https://habr.com/ru/post/581854/
+
+old http://big-elephants.com/2013-09/exploring-query-locks-in-postgres/
+
+#
+
+DB seeder for Django ORM / Flask SQL-Alchemy?
+
+#
 psql -U postgres
 
 \dt
@@ -824,6 +840,9 @@ https://github.com/search?q=SQL+Practice+Problems+57
 
 https://www.sql-ex.ru/
 https://www.w3resource.com/sql-exercises/
+
+https://github.com/search?q=sqlex
+https://github.com/volkhin/sqlex-solver
 
 ---
 
