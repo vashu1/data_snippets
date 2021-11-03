@@ -1,3 +1,5 @@
+High Altitude Launch for a Practical SSTO
+
 ? midaco mentioned http://www.pyopt.org/examples/examples.html
 
 Comparison between original Galileo and MIDACO Missions
