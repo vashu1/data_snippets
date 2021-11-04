@@ -235,7 +235,7 @@ def dg(height: float, dh: float = 1) -> float:
     ring_g = distance(integrate((r, 0, 0)))
     sun_g2 = G * SUN_MASS / ((r-dh) ** 2)
     ring_g2 = distance(integrate(((r-dh), 0, 0)))
-    return (sun_g2 - ring_g2) - (sun_g - ring_g)
+    return (sun_g2 - ring_g2) - (sun_g - ring_g), ring_g2 - ring_g
 
 
 """
