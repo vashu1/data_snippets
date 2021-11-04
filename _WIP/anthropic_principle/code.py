@@ -3,6 +3,8 @@ import mpmath as mp
 import matplotlib.pyplot as plt
 mp.dps = 10000 # big overshot
 
+# arbitrary-precision    standard library - decimal    also mpmath   also gmpy and PyGMP
+
 """
 
 Romberg algorithm   evently spaced interation
@@ -15,10 +17,18 @@ from sympy import init_printing, integrate, Symbol, exp, cos, erf, log, oo
 import numpy as np
 init_printing()
 z = Symbol('z')
-n = 30
+n = 21  # 22 does not work
 nf = np.prod(range(1,n)) # (n-1)!
 f = (-log(z))**(n-1) / nf
 integrate(f, z)
+integrate(f, (z,0,1))
+
+PROB = 1e-12
+for n in range(1, 30+1):  # 21
+    z = Symbol('z')
+    nf = np.prod(range(1,n)) # (n-1)!
+    f = (-log(z))**(n-1) / nf
+    print(n, integrate(f, (z, PROB, 1)) / integrate(f, (z,0,PROB)))
 
 >>> integrate(f, (z,0,1))
 1
