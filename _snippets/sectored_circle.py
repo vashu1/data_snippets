@@ -2,7 +2,15 @@ from common.graphics import *
 from PIL import ImageGrab  # pip3 install tk    brew install python-tk
 import math
 import numpy as np
+"""
+maxwell color spinner https://www.google.com/search?client=firefox-b-d&q=maxwell+color+spinner
+maxwell color top
 
+Maxwell's disc https://en.wikipedia.org/wiki/Color_triangle
+
+https://www.nms.ac.uk/explore-our-collections/stories/science-and-technology/james-clerk-maxwell-inventions/james-clerk-maxwell/colour-disks/
+
+"""
 SIZE = 300
 COLORS = ['red', 'green', 'blue'] * 9
 win = GraphWin("", SIZE, SIZE, True)
