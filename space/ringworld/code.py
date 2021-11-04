@@ -1,5 +1,5 @@
 import math
-from typing import Tuple, List
+from typing import Tuple, List, Callable
 import scipy  # type: ignore
 import matplotlib.pyplot as plt  # type: ignore
 
@@ -44,12 +44,12 @@ def split_rect(rect: Rect) -> List[Rect]:  # splits 1 rect in 4
     p23 = middle_point(p2, p3)
     p34 = middle_point(p3, p4)
     p41 = middle_point(p4, p1)
-    pcenter = rect_center(rect)
+    center = rect_center(rect)
     return [
-        (p1, p12, pcenter, p41),
-        (p12, p2, p23, pcenter),
-        (p41, pcenter, p34, p4),
-        (pcenter, p23, p3, p34),
+        (p1, p12, center, p41),
+        (p12, p2, p23, center),
+        (p41, center, p34, p4),
+        (center, p23, p3, p34),
     ]
 
 
@@ -157,6 +157,7 @@ def stability(height: float, dh: float = 1) -> bool:  # height relative to ring
     ke = satellite_v**2 / 2 # kinetic energy
     ke2 = satellite_v2 ** 2 / 2
     result = ke < (ke2 + ped)
+    print(ke - (ke2 + ped))
     if dh < 0:
         result = not result
     return result
@@ -208,7 +209,16 @@ print(find_boundary(1e9, 3e9))  # 2_629_883_170.5935297
 
 Ситуация осложняется если мы хотим отклониться от плоскости вращения Кольца (чтобы рассмотреть пристенные районы получше). Нетрудно прикинуть что потенциальная энергия гравитации Кольца для спутника на низкой орбите будет порядка 200 кДж, достаточно чтобы нарастить скорость спутника на 0.5 км в секунду и изменить его высоту на миллионы км.
 
+Альтернатива - спиралевидная орбита вокруг кольца. Показано
 https://worldbuilding.stackexchange.com/questions/79716/stable-ringworld-interactivity-with-other-solar-system-objects
+что такая орбита работает для кольца с околонулевой шириной (15 ккм против 1500 ккм кольца).
+
+Проблема в том что с "реальным" кольцом пренебречь шириной нельзя.
+
+К счастью, ускорение в полмиллиметра несложно компенсировать солнечным парусом даже на современном уровне технологий.
+
+
+
 helical motion around a ringworld
 
 physics demonstration of charged droplets spiralling around a charged knitting needle 
@@ -277,42 +287,19 @@ def rotate_z(p: Point, alpha_rad: float) -> Point:
     return x, y, z
 
 
-def leapfrog(time: float, height: float, z: float, dt: float = 1e4) -> List[Point]:
-    def a(p):
-        ring_g_v = integrate(p)
-        sun_g = G * SUN_MASS / distance_square(p)
-        sun_g_v = mul_v(unit(p), -sun_g)
-        a = sum_v(ring_g_v, sun_g_v)
-        #print(a)
-        return a
-    #TODO move out, pass p,v as params
-    r = RING_RADIUS - height
-    ring_g_v = integrate((r, 0, z))
-    vector = (r, 0, z)
-    ring_g = scalar(unit(vector), ring_g_v)
-    sun_g = G * SUN_MASS / distance_square(vector)
-    g = sun_g - ring_g
-    satellite_v = math.sqrt(g * distance(vector))  #TODO add k multiplicator
-    print(sun_g - ring_g, sun_g, ring_g)
-    print(satellite_v)
+def leapfrog(time: float, p: Point, v: Point, fa: Callable[[Point], Point], dt: float = 1e4) -> List[Point]:
     points = []
     # https://en.wikipedia.org/wiki/Leapfrog_integration
-    v = (0., satellite_v, 0.)
-    p = (r, 0., z)
     points.append(p)
     t = 0.
-    a_prev = a(p)
+    a_prev = fa(p)
     while t <= time:
         vdt = mul_v(v, dt)
         p1 = sum_v(p, vdt, mul_v(a_prev, (dt**2) / 2))
-        a_cur = a(p1)
-        print('a', distance(a_cur), distance(v)**2/distance(p), distance(a_cur) - distance(v)**2/distance(p))
+        a_cur = fa(p1)
         v1 = sum_v(v, mul_v(sum_v(a_prev, a_cur), dt / 2))
-        print('v', v1)
-        #print('-', v, sum_v(a_prev, a_cur))
-        #print('v1', distance(v1), v1)
         # rotate vectors to keep y close to 0
-        for i in range(2):  #TODO ? 1
+        for i in range(0):  #TODO ? 1 or 2
             d = distance(p1)
             alpha = p1[1] / d
             p1 = rotate_z(p1, alpha)
@@ -328,19 +315,115 @@ def leapfrog(time: float, height: float, z: float, dt: float = 1e4) -> List[Poin
     return points
 
 
+def ring_a(p: Point) -> Point:
+    ring_g_v = integrate(p)
+    sun_g = G * SUN_MASS / distance_square(p)
+    sun_g_v = mul_v(unit(p), -sun_g)
+    a = sum_v(ring_g_v, sun_g_v)
+    return a
+
+
+def run_ring(time: float, height: float, z: float, dt: float = 1e4):
+    #TODO use satellite_gv()?
+    r = RING_RADIUS - height
+    vector = (r, 0, z)
+    ring_g_v = integrate(vector)
+    ring_g = scalar(unit(vector), ring_g_v)
+    sun_g = G * SUN_MASS / distance_square(vector)
+    g = sun_g - ring_g
+    satellite_v = math.sqrt(g * distance(vector))
+    v = (0., satellite_v, 0.)
+    p = (r, 0., z)
+    return leapfrog(time, p, v, ring_a, dt)
+
 def draw_orbit(points: List[Point]) -> None:
     _, _, zs = zip(*points)
     xs = [RING_RADIUS - distance(p) for p in points]
-    plt.scatter(xs, zs)
-    plt.plot(xs, zs)
-    print('draw_orbit')
-    print(zs)
-    print(xs)
-    #TODO add ring line
+    plt.scatter(zs, xs)
+    plt.plot(zs, xs)
+    # ring line
+    rz, rx = (-RING_WIDTH/2, +RING_WIDTH/2), (0, 0)
+    plt.scatter(rz, rx)
+    plt.plot(rz, rx)
+    plt.gca().set_aspect('equal', adjustable='box')
     plt.show()
 
-points = leapfrog(time=9e5, height=1e5, z=0, dt=3e3)
-draw_orbit(points)
+exit(1)
+# spiral
+height = 2e9
+r = RING_RADIUS - height
+p = (r, 0, 0)
+satellite_v = math.sqrt(distance(ring_a(p)) * distance(p))
+a_ring = distance(integrate(p))
+satellite_v2 = math.sqrt(a_ring * height)
+v = (0, satellite_v*1.02, satellite_v2*1.45)
+points3 = leapfrog(1e8, p, v, ring_a, dt=2e4)
+draw_orbit(points3)
+
+height = 1e9
+r = RING_RADIUS - height
+p = (r, 0, 0)
+satellite_v = math.sqrt(distance(ring_a(p)) * distance(p))
+a_ring = distance(integrate(p))
+satellite_v2 = math.sqrt(a_ring * height)
+v = (0, satellite_v*1.02, satellite_v2*1.55)
+points3 = leapfrog(1e8/4, p, v, ring_a, dt=2e4)
+draw_orbit(points3)
+
+#1.5 try 2
+height = 1e9
+r = RING_RADIUS - height
+p = (r, 0, 0)
+satellite_v = math.sqrt(distance(ring_a(p)) * distance(p))
+a_ring = distance(integrate(p))
+satellite_v2 = math.sqrt(a_ring * height)
+v = (0, satellite_v*1.025, satellite_v2*1.65)
+points3 = leapfrog(1e8/4, p, v, ring_a, dt=2e4)
+draw_orbit(points3)
+
+height = 5e9
+r = RING_RADIUS - height
+p = (r, 0, 0)
+satellite_v = math.sqrt(distance(ring_a(p)) * distance(p))
+a_ring = distance(integrate(p))
+satellite_v2 = math.sqrt(a_ring * height)
+v = (0, satellite_v*1.02, satellite_v2*1.55)
+points3 = leapfrog(1e8/2, p, v, ring_a, dt=2e4)
+draw_orbit(points3)
+
+exit(1)
+
+# 1e5
+points3 = run_ring(time=1e5, height=1e10, z=1e3, dt=1e3)
+draw_orbit(points3)
+exit(1)
+
+EARTH_MASS = 5.972e24
+EARTH_RADIUS = 6.378e6
+
+def earth_a(p: Point) -> Point:
+    earth_g = G * EARTH_MASS / distance_square(p)
+    earth_g_v = mul_v(unit(p), -earth_g)
+    return earth_g_v
+
+def draw_earth_orbit(points: List[Point]) -> None:
+    xs, ys, _ = zip(*points)
+    plt.scatter(xs, ys)
+    plt.plot(xs, ys)
+    #TODO add ring line
+    plt.gca().set_aspect('equal', adjustable='box')
+    plt.show()
+
+r = EARTH_RADIUS + 3e5
+p = (r, 0, 1e6)
+satellite_v = math.sqrt(distance(earth_a(p)) * distance(p))
+v = (0, satellite_v*1.25, 0)
+
+points = leapfrog(24.9e3, p, v, earth_a, 1e2)
+draw_earth_orbit(points)
+
+# orbits:
+# in plane
 
 # https://youtu.be/d1sr6aVzW9M?t=39   NASA astronauts performing gymnastics on board of the Skylab
 
