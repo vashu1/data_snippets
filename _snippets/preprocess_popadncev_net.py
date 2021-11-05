@@ -4,9 +4,15 @@ Preprocess popodancev.net mirror site files after wget.
 # wget --mirror --page-requisites --reject-regex=.*reply.* https://www.popadancev.net
 # s3:::popadancev.net http://popadancev.net.s3-website-us-east-1.amazonaws.com
 
-# rm index.html?p=*
-# rm -rf wp-json/oembed/1.0
-# rm .DS_Store
+rm -rf merge
+cp -R www.popadancev.net_1 merge
+rsync -a www.popadancev.net_2/ merge/
+rsync -a www.popadancev.net_3/ merge/
+cd merge
+rm index.html?p=*
+rm -rf wp-json/oembed/1.0
+rm .DS_Store
+
 # ? rm index_html_p*
 # aws s3 cp ./ s3://popadancev.net/ --recursive --profile root
 """
@@ -37,6 +43,7 @@ def clean_href(txt, start = "href='", end = "'"):
         url = txt[s:e]
         if 'popadancev' in url:
             new_url = clean_special_chars(url)
+            new_url = new_url.replace('amp;', '')
             if url != new_url:
                 txt = txt.replace(url, new_url)
         position = txt.find(start, position + len(start))
@@ -46,9 +53,15 @@ def drop_dynamic_elements(lines):
     page_content = ''.join(lines)
     soup = BeautifulSoup(page_content, 'html.parser')
     search_form = soup.find('form', attrs={'class': 'searchform'})
-    search_form.decompose()
+    if search_form:
+        search_form.decompose()
+    else:
+        print('no search_form')
     comment_respond = soup.find('div', attrs={'class': 'comment-respond'})
-    comment_respond.decompose()
+    if comment_respond:
+        comment_respond.decompose()
+    else:
+        print('no comment_respond')
     return [(line + '\n') for line in str(soup).split('\n')]
 
 def fix_comment_anchors(line):
@@ -82,4 +95,5 @@ def fix_file(filename):
 
 
 for filename in glob.iglob('**/**html**', recursive=True):
-     fix_file(filename)
+    print(filename)
+    fix_file(filename)
