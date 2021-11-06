@@ -4,6 +4,13 @@ Preprocess popodancev.net mirror site files after wget.
 # wget --mirror --page-requisites --reject-regex=.*reply.* https://www.popadancev.net
 # s3:::popadancev.net http://popadancev.net.s3-website-us-east-1.amazonaws.com
 
+wget --mirror --page-requisites --reject-regex=.*reply.* https://www.popadancev.net
+mv www.popadancev.net www.popadancev.net_1
+wget --mirror --page-requisites --reject-regex=.*reply.* https://www.popadancev.net
+mv www.popadancev.net www.popadancev.net_2
+wget --mirror --page-requisites --reject-regex=.*reply.* https://www.popadancev.net
+mv www.popadancev.net www.popadancev.net_3
+
 rm -rf merge
 cp -R www.popadancev.net_1 merge
 rsync -a www.popadancev.net_2/ merge/
