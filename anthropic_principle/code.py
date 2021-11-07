@@ -1,3 +1,59 @@
+import random
+import numpy as np
+random.seed(0)
+probabilities = [random.random() for _ in range(30)]
+np.prod(probabilities)
+# 1.4598872421212405e-08
+min(probabilities)
+# 0.1007012080683658
+
+
+
+import random
+import numpy as np
+acc = []
+acc_min = []
+for i in range(int(1e6)):
+    probabilities = [random.random() for _ in range(30)]
+    acc.append(np.prod(probabilities))
+    acc_min.append(min(probabilities))
+
+acc.sort()
+acc_min.sort()
+
+print(acc[0])
+print(acc[10_000])
+print(acc[500_000])
+print(acc[1_000_000 - 10_000])
+print(acc[-1])
+
+print(acc_min[0])
+print(acc_min[10_000])
+print(acc_min[500_000])
+print(acc_min[1_000_000 - 10_000])
+print(acc_min[-1])
+
+
+
+
+from sympy import init_printing, integrate, Symbol, log
+import numpy as np
+init_printing()
+PROB = 1e-11
+
+def probability(n):
+    z = Symbol('z')
+    nf = np.prod(range(1,n)) # (n-1)!
+    f = (-log(z))**(n-1) / nf
+    return integrate(f, (z, PROB, 1)) / integrate(f, (z,0,PROB))
+
+for n in range(1, 30+1): # integral partially breaks at 21, but integral ratio seems to be ok
+    print(n, probability(n))
+
+
+
+
+
 # pip3 install mpmath
 import mpmath as mp
 import matplotlib.pyplot as plt
