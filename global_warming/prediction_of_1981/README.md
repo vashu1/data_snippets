@@ -17,3 +17,7 @@ Fig.7, Climate Impact of Increasing Atmospheric Carbon Dioxide, J.Hansen, Scienc
 
 **data.json** - average global temperatures
 NOAA National Centers for Environmental information, Climate at a Glance: Global Time Series, published December 2020, retrieved on December 18, 2020 from [ncdc.noaa.gov](https://www.ncdc.noaa.gov/cag/global/time-series/globe/land_ocean/ann/3/1880-2020)
+
+## Also
+
+![](https://nplus1.ru/images/2020/01/23/47f7ab3fb9d428e466769d33ecb1f357.png)
