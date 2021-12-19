@@ -27,8 +27,14 @@ for line in lines:
     assert len(vals) == 3
     scanner_data[current_scanner].append(np.array(list(map(int, vals))))
 
+
+def flatten(t):
+    return [item for sublist in t for item in sublist]
+
+
 def dot_ivariant_distance(dot1, dot2):
     return np.prod(np.abs(dot1 - dot2) + np.array([1,1,1]))  # add ones to stop single zero from spoiling invariant
+
 
 def transformation_combinations():
     for i in all_directions:
@@ -53,11 +59,11 @@ scanner_beacons[starting_scanner] = scanner_data[starting_scanner]
 scanner_dot_invariants = defaultdict(set)
 similar_dots = defaultdict(list)
 for indx in scanner_data:
-    for v in scanner_data[indx]:
-        for j in scanner_data[indx]:
-            if np.all(v == j):
+    for v, vv in enumerate(scanner_data[indx]):
+        for j, jj in enumerate(scanner_data[indx]):
+            if v < j:
                 continue
-            invariant = dot_ivariant_distance(v, j)
+            invariant = dot_ivariant_distance(vv, jj)
             similar_dots[invariant].append((indx, v, j))
             scanner_dot_invariants[indx].add(invariant)
 
@@ -70,12 +76,11 @@ for i in scanner_dot_invariants:
         similarity[(i, j)] = val
         similarity[(j, i)] = val
 
-similar_dots2 = defaultdict(defaultdict(list))
+similar_dots2 = defaultdict(lambda: defaultdict(list))
 for invariant in similar_dots:
     scanners = {scanner for scanner, _, _  in similar_dots[invariant]}
     for scanner in scanners:
         similar_dots2[scanner][invariant] += similar_dots[invariant]
-
 
 cnt = 0
 while len(transformations) != len(scanner_data):
@@ -91,11 +96,17 @@ while len(transformations) != len(scanner_data):
         continue
     #print(f'start {candidate_scanner=}')
     # pick dot
-    candidate_dot_indx = random.randrange(len(scanner_data[candidate_scanner]))
-    candidate_dot = scanner_data[candidate_scanner][candidate_dot_indx]
+    invariant = random.choice([v for v in similar_dots2[candidate_scanner].keys() if v in similar_dots2[candidate_scanner2]])
+    dots1 = flatten([(i, j) for scanner, i, j in similar_dots2[candidate_scanner][invariant] if scanner == candidate_scanner])
+    dots1 = [scanner_data[candidate_scanner][i] for i in set(dots1)]
+    candidate_dot = random.choice(dots1)
+    dots2 = flatten([(i, j) for scanner, i, j in similar_dots2[candidate_scanner2][invariant] if scanner == candidate_scanner2])
+    dots2 = [scanner_data[candidate_scanner2][i] for i in set(dots2)]
+    turn2, offset2 = transformations[candidate_scanner2]
+    dots2 = [np.sum(dot*turn2, axis=1)+offset2 for dot in dots2]
     # go through all transformations and count good dots
     for turn in transformation_combinations():
-        for cur_beacon in scanner_beacons[candidate_scanner2]:
+        for cur_beacon in dots2:
             candidate_dot_turned = np.sum(candidate_dot*turn, axis=1)
             offset = cur_beacon - candidate_dot_turned
             good_dot_count = 0
@@ -138,5 +149,5 @@ for i in scanner_dot_invariants:
 print('task2', max_dist)
 
 # on test 2x faster  solves input in 2:30   1:27-1:50 after sorting similarity
-
+# final performance - 6 seconds
 
