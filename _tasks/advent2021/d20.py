@@ -67,9 +67,12 @@ def print_image(image):
         print(''.join(row)[:200])
     print('\n')
 
-def run_step(image, i):
+def run_step(image):
+    # get state of infinite field
+    i = get_index(image, 1, 1)
+    filler = algo[i]
+    # fill new_image
     new_image = []
-    filler = '#' if i%2==0 else '.'
     new_image.append([filler] * w2)
     for y in range(1, h2-1):
         row = [filler]
@@ -82,13 +85,13 @@ def run_step(image, i):
     return new_image
 
 for i in range(2):
-    image = run_step(image, i)
+    image = run_step(image)
     # print_image(image)
 
 print('task1', sum([row.count('#') for row in image]))
 
 for i in range(48):
-    image = run_step(image, i)
+    image = run_step(image)
 
 #print_image(image)
 print('task2', sum([row.count('#') for row in image]))
