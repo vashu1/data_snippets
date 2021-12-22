@@ -1,13 +1,7 @@
-from collections import defaultdict, Counter
-import itertools
-import math
-import numpy as np
-
 """
 one cube per integer 3-dimensional coordinate (x,y,z)
 Each cube can be either on or off; at the start of the reboot process, they are all off
 """
-
 
 #data = [line.strip() for line in open('test22.txt').readlines()]
 data = [line.strip() for line in open('input22.txt').readlines()]
@@ -140,10 +134,4 @@ print('task 1', 503864)
 
 print(f'{len(cubes)=}')
 print('task 2', cubes_volume(cubes))
-
-xs = []
-ys = []
-zs = []
-for line in data:
-    _, new_cube = parse_line(line)
-    (x1, x2), (y1, y2), (z1, z2) = cube
+# time 192 sec
