@@ -19,3 +19,17 @@ vals = [v for v in vals if all([v%n==0 for n in range(2, N+1)])]
 vals.sort()
 
 print(vals[0])
+
+# TRY 2
+
+def power(n, p):
+    res = 0
+    while n % p == 0:
+        n //= p
+        res += 1
+    return res
+
+factors = lambda n: [power(n, p) for p in primes]
+factors_matrix = np.array([factors(n) for n in range(1, N+1)])
+factors_max = np.max(factors_matrix, axis=0)
+print(np.prod([p**n for p, n in  zip(primes, factors_max)]))
