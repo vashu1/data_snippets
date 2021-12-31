@@ -11,5 +11,3 @@ for a in range(10, 100):
         v2 = (a//10) / (b//10)
         if v1 == v2:
             print(f'a/b = {a} / {b}   {v1=} {v2=}')
-
-#
