@@ -34,14 +34,29 @@ grid2 = np.concatenate(np.transpose(grid))
 
 oo8 = __import__("008_sequence_max_prod")
 
-vals = [oo8.sequence_max_prod(grid1, SEQ_LEN)]
-print(grid)
-vals += [oo8.sequence_max_prod(grid2, SEQ_LEN)]
+'''
+# test
+grid = np.array([[0,0,0],[2,1,3],[0,0,0]])
+grid = np.transpose(np.array([[1,0,0],[1,0,0],[1,0,0]]))
+grid = np.array([[1,0,0],[0,1,0],[0,0,1]])
+grid = np.transpose(np.array([np.roll(row, -indx) for indx, row in enumerate(grid)]))
+grid = np.array([[0,0,1],[0,1,0],[1,0,0]])
+grid = np.transpose(np.array([np.roll(row, indx) for indx, row in enumerate(grid)]))
 print(grid)
 
-diag = np.array([np.roll(row, indx) for indx, row in enumerate(np.transpose(grid))])
+grid = np.concatenate(grid)
+vals = [oo8.sequence_max_prod(grid, 2)]
+print(vals)
+print('up')
+exit(0)
+'''
+
+vals = [oo8.sequence_max_prod(grid1, SEQ_LEN)]
+vals += [oo8.sequence_max_prod(grid2, SEQ_LEN)]
+
+diag = np.transpose(np.array([np.roll(row, -indx) for indx, row in enumerate(grid)]))
 vals += [oo8.sequence_max_prod(np.concatenate(diag), SEQ_LEN)]
-diag = np.transpose(np.array([np.roll(row, indx) for indx, row in enumerate(np.transpose(grid))]))
+diag = np.transpose(np.array([np.roll(row, indx) for indx, row in enumerate(grid)]))
 vals += [oo8.sequence_max_prod(np.concatenate(diag), SEQ_LEN)]
 
 print(vals)

@@ -1,0 +1,16 @@
+revisit d18
+
+
+d22 https://github.com/davearussell/advent2021/blob/master/day22/solve.py
+
+
+https://adventofcode.com/2015
+to
+https://adventofcode.com/2020/day/19
+
+
+Самой муторной, чисто из-за неумения комфортно работать с деревом по-функциональному, была 18. задача, хотя сама проблема обойти дерево налево и направо от интересующего звена — простая. Задачу решил, а потом узнал о clojure.zip и зиппере деревьев вообще — great success и познавательно!
+
+В общем да, очень нравится.
+
+https://github.com/einars/aoc-2021

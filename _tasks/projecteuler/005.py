@@ -18,7 +18,8 @@ vals = [v*(2**p2)*(3**p3) for p2 in range(4) for p3 in range(2)]
 vals = [v for v in vals if all([v%n==0 for n in range(2, N+1)])]
 vals.sort()
 
-print(vals[0])
+if __name__ == '__main__':
+    print(vals[0])
 
 # TRY 2
 
@@ -32,4 +33,6 @@ def power(n, p):
 factors = lambda n: [power(n, p) for p in primes]
 factors_matrix = np.array([factors(n) for n in range(1, N+1)])
 factors_max = np.max(factors_matrix, axis=0)
-print(np.prod([p**n for p, n in  zip(primes, factors_max)]))
+
+if __name__ == '__main__':
+    print(np.prod([p**n for p, n in  zip(primes, factors_max)]))

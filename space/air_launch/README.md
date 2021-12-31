@@ -1,3 +1,7 @@
+ракета хуже воздущных до 10 махов с лишним
+https://commons.wikimedia.org/wiki/File:Specific-impulse-kk-20090105.png?uselang=ru
+
+
 High Altitude Launch for a Practical SSTO
 
 ? midaco mentioned http://www.pyopt.org/examples/examples.html

@@ -1,0 +1,79 @@
+                similarity_list = [(v, i, j) for v, i, j in similarity_list if
+                                   not ((i in transformations) and (j in transformations))]
+                similarity_list.sort(key=lambda v: v[0], reverse=True)
+
+
+def dot_distance(dot1, dot2):
+    res = np.abs(dot1 - dot2)
+    return np.max(res)
+
+scanner_data_center = {}
+for scanner_indx in scanner_data:
+    scanner_data_center[scanner_indx] = scanner_data[0]
+    for v in scanner_data[scanner_indx][1:]:
+        scanner_data_center[scanner_indx] += v
+    scanner_data_center[scanner_indx] /= len(scanner_data_center[scanner_indx])
+
+
+saved_transformation_combinations = None
+def transformation_combinations():
+    global saved_transformation_combinations
+    if saved_transformation_combinations:
+        return saved_transformation_combinations
+    result = [
+        [+ox, +oy, +oz],
+    ]
+    for i in range(3):
+        m = result[-1].copy()
+        m[0] = -result[-1][1]
+        m[1] = +result[-1][0]
+        result.append(m)
+    result2 = []
+    for i in result:
+        result2.append(i)
+        for i in range(3):
+            m = result2[-1].copy()
+            m[0] = -result2[-1][2]
+            m[2] = +result2[-1][0]
+            result2.append(m)
+        for i in range(3):
+            m = result2[-1].copy()
+            m[1] = -result2[-1][2]
+            m[2] = +result2[-1][1]
+            result2.append(m)
+    saved_transformation_combinations = result2
+    return result2
+
+
+def normal(v1,v2):
+    return v1[1]*v2[2] - v1[2]*v2[1], v1[2]*v2[0] - v1[0]*v2[2], v1[0]*v2[1] - v1[1]*v2[0]
+
+def check_vectors(v1,v2,v3):  #TODO use numpy.cross or numpy.linalg.norm ?
+    normal = v1[1]*v2[2] - v1[2]*v2[1], v1[2]*v2[0] - v1[0]*v2[2], v1[0]*v2[1] - v1[1]*v2[0]
+    return np.all(normal == v3)
+
+def check_matrix(m):
+    v1,v2,v3 = m
+    for vals in itertools.permutations([v1,v2,v3]):
+        if check_vectors(*vals):
+            return True
+    return False
+
+def transformation_combinations2():
+    res = itertools.combinations([+ox, +oy, +oz, -ox, -oy, -oz], 3)
+    res = list(filter(check_matrix, res))
+    res2 = []
+    for m in res:
+        v1, v2, v3 = m
+        for vals in itertools.permutations([v1, v2, v3]):
+            if check_vectors(*vals):
+                res2.append(np.array(vals))
+    return list(res)
+
+transformation_combinations2()
+len(transformation_combinations2())
+#assert len(transformation_combinations2()) == 24
+
+from scipy.spatial.transform import Rotation as R
+r = R.from_euler('zyx', [[90, 0, 0]], degrees=True)  # ,[0, 45, 0],[45, 60, 30]
+r.apply(ox)
