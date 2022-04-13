@@ -74,3 +74,5 @@ preprocessing with cv2 https://nanonets.com/blog/ocr-with-tesseract/
 + Blacklisting characters
 
 training https://github.com/tesseract-ocr/tesseract/issues/2382
+
+Paddle OCR https://habr.com/ru/company/jetinfosystems/blog/660405/
