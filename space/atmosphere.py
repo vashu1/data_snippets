@@ -69,7 +69,7 @@ M = 5.97219e24
 m = 0.003  # kg
 s = 1e-4  # m2
 height = 400
-extra_v = 135  # to elliptic orbit - 135 m/s means apogee minus perigee = about 500 km
+extra_v = 135/4  # to elliptic orbit - 135 m/s means apogee minus perigee = about 500 km
 
 # Earth
 R = 6.371e6 # meters
@@ -120,16 +120,18 @@ while True:
 
     height_km = (h(x, y) - R) / 1000.0
     if nx <= 0 and x>0:
-        print('perigee', height_km, v)
-        print('diff perigee h', round((height_km - apogee[0]) * 1000, 1))
+        if n % 100 == 0:
+            print('perigee', height_km, v)
+            print('diff perigee h', round((height_km - apogee[0]) * 1000, 1))
         apogee = height_km, v
     if nx >=0 and x<0:
-        print('apogee', height_km, v)
-        if perigee[0]:
-            print('diff apogee h', round((height_km - perigee[0])*1000, 1))
-        perigee = height_km, v
         n += 1
-        print('N', n, 'day', round(t/3600/24, 1))
+        if n % 100 == 0:
+            print('apogee', height_km, v)
+            if perigee[0]:
+                print('diff apogee h', round((height_km - perigee[0])*1000, 1))
+            perigee = height_km, v
+            print('N', n, 'day', round(t/3600/24, 1))
 
     nx = x
     ny = y

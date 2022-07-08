@@ -76,3 +76,8 @@ preprocessing with cv2 https://nanonets.com/blog/ocr-with-tesseract/
 training https://github.com/tesseract-ocr/tesseract/issues/2382
 
 Paddle OCR https://habr.com/ru/company/jetinfosystems/blog/660405/
+
+Как я дообучал Tesseract и что из этого получилось
+https://habr.com/ru/company/rosatom/blog/669020/
+...
+https://habr.com/ru/search/?target_type=posts&order=relevance&q=%5Btesseract%5D

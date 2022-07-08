@@ -77,7 +77,7 @@ def animate(year):
 
 
 ani = animation.FuncAnimation(
-    fig, animate, frames = years, init_func=init, interval=500, blit=True, repeat = False)
+    fig, animate, frames = years, init_func=init, interval=500, blit=False		, repeat = False)
 
 # To save the animation, use e.g.
 #
@@ -90,6 +90,3 @@ ani = animation.FuncAnimation(
 # ani.save("movie.mp4", writer=writer)
 
 plt.show()
-
-
-Dr. Mark Rowe

@@ -28,10 +28,10 @@ def problem_function(x):
     f = [0.0]*1 # Initialize array for objectives F(X) 
 
     # Objective functions F(X)
-    f[0] = (x[0] - 1)*(x[0] - 1) + \
-           (x[1] - 2)*(x[1] - 2) + \
-           (x[2] - 3)*(x[2] - 3) + \
-           (x[3] - 4)*(x[3] - 4) + \
+    f[0] = (x[0] - 1.1)*(x[0] - 1.1) + \
+           (x[1] - 2.2)*(x[1] - 2.2) + \
+           (x[2] - 3.3)*(x[2] - 3.3) + \
+           (x[3] - 4.4)*(x[3] - 4.4) + \
            1.23456789  
     
     # Dummy value
@@ -58,14 +58,14 @@ problem['@'] = problem_function # Handle for problem function name
 ##############################
 problem['o']  = 1  # Number of objectives 
 problem['n']  = 4  # Number of variables (in total) 
-problem['ni'] = 4  # Number of integer variables (0 <= ni <= n) 
+problem['ni'] = 0  # Number of integer variables (0 <= ni <= n)
 problem['m']  = 0  # Number of constraints (in total) 
 problem['me'] = 0  # Number of equality constraints (0 <= me <= m) 
 
 # STEP 1.B: Lower and upper bounds 'xl' & 'xu'  
 ##############################################  
 problem['xl'] = [ 1, 1, 1, 1 ]
-problem['xu'] = [ 4, 4, 4, 4 ]
+problem['xu'] = [ 5, 5, 5, 5 ]
 
 # STEP 1.C: Starting point 'x'  
 ##############################  
@@ -118,10 +118,9 @@ import midaco
 if __name__ == '__main__': 
 
   solution = midaco.run( problem, option, key )
-
-# print(solution['f'])
-# print(solution['g'])
-# print(solution['x'])
+  print(solution['f'])
+  print(solution['g'])
+  print(solution['x'])
 
 ########################################################################
 ############################ END OF FILE ###############################
