@@ -1,5 +1,3 @@
-from utils import *
-
 input_test = """R 4
 U 4
 L 3
@@ -16,28 +14,26 @@ input = [line.strip() for line in input_full]
 
 def move_head(cmd, h):
     if cmd == 'U':
-        return (h[0], h[1]+1)
+        return h[0], h[1] + 1
     elif cmd == 'D':
-        return (h[0], h[1]-1)
+        return h[0], h[1] - 1
     elif cmd == 'L':
-        return (h[0]-1, h[1])
+        return h[0] - 1, h[1]
     elif cmd == 'R':
-        return (h[0]+1, h[1])
+        return h[0] + 1, h[1]
     else:
         assert False
 
 
 def pull_tail(h, t):
-    dx_ = t[0] - h[0]
-    dy_ = t[1] - h[1]
-    dx = abs(dx_)
-    dy = abs(dy_)
-    if dx > 1 or dy > 1:
-        if dx_:
-            dx_ = -1 if dx_ < 0 else 1
-        if dy_:
-            dy_ = -1 if dy_ < 0 else 1
-        return (t[0] - dx_, t[1] - dy_)
+    dx = t[0] - h[0]
+    dy = t[1] - h[1]
+    if abs(dx) > 1 or abs(dy) > 1:
+        if dx:
+            dx = -1 if dx < 0 else 1
+        if dy:
+            dy = -1 if dy < 0 else 1
+        return t[0] - dx, t[1] - dy
     return t
 
 
