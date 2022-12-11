@@ -33,14 +33,11 @@ def pull_tail(h, t):
     dx = abs(dx_)
     dy = abs(dy_)
     if dx > 1 or dy > 1:
-        if dx == 0:
-            return (t[0], t[1] - dy_ // 2)
-        elif dy == 0:
-            return (t[0] - dx_ // 2, t[1])
-        else:
+        if dx_:
             dx_ = -1 if dx_ < 0 else 1
+        if dy_:
             dy_ = -1 if dy_ < 0 else 1
-            return (t[0] - dx_, t[1] - dy_)
+        return (t[0] - dx_, t[1] - dy_)
     return t
 
 

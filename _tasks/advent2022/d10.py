@@ -1,8 +1,4 @@
-"""
-
-"""
 from utils import *
-from collections import defaultdict, Counter, deque
 
 input_test = """addx 15
 addx -11
