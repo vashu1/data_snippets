@@ -1,3 +1,5 @@
+import math
+
 input_test = """Monkey 0:
   Starting items: 79, 98
   Operation: new = old * 19
@@ -79,9 +81,8 @@ print(inspections[-1] * inspections[-2])
 monkeys = Monkey.parse(input)
 
 inspections = [0]*len(monkeys)
-monkey_div = 1
-for d in [m.test_div for m in monkeys]:
-    monkey_div *= d
+monkey_div = math.prod([m.test_div for m in monkeys])
+
 for round in range(10_000):
     for indx, m in enumerate(monkeys):
         inspections[indx] += len(m.items)
