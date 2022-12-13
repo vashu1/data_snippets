@@ -1,5 +1,5 @@
-
 curl --cookie "session=TODO" -o d14.txt https://adventofcode.com/2022/day/14/input
+
 
 
 :: https://www.reddit.com/r/adventofcode/comments/a2vonl/how_to_download_inputs_with_a_script/
