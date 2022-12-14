@@ -1,4 +1,4 @@
-curl --cookie "session=TODO" -o d14.txt https://adventofcode.com/2022/day/14/input
+curl --cookie "session=53616c7465645f5f1e8b218749f13bed3d1284b6945d48252ea66af87a1205ebd4abb154b636c3be3d788b4fc5befe9b300895225dddd50aa4750b709ebc9295" -o d14.txt https://adventofcode.com/2022/day/14/input
 
 
 
