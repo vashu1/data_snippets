@@ -1,5 +1,4 @@
 from utils import *
-from collections import defaultdict, Counter, deque
 
 input_test = """498,4 -> 498,6 -> 496,6
 503,4 -> 502,4 -> 502,9 -> 494,9"""
@@ -7,24 +6,16 @@ input_test = input_test.split('\n')
 
 input_full = open('d14.txt').readlines()
 
-parse = lambda vals: (int(vals.split(',')[0]) - 300, int(vals.split(',')[1]))
-min_x = min_y = 1_000_000
-max_x = max_y = -1_000_000
-for i in input_full:
-    for c in i.split(' -> '):
-        x, y = parse(c)
-        if x > max_x:
-            max_x = x
-        if y > max_y:
-            max_y = y
-        if x < min_x:
-            min_x = x
-        if y < min_y:
-            min_y = y
+parse = lambda vals: (int(vals.split(',')[0]), int(vals.split(',')[1]))
 
-print(f'{min_x=} {max_x=} {min_y=} {max_y=}')
-# min_x=473 max_x=578 min_y=14 max_y=161
-floor = max_y + 2
+vals = [line.split(' -> ') for line in input_full]
+vals = flatten(vals)
+vals = lmap(parse, vals)
+xs, ys = zip(*vals)
+print(f'{min(xs)=} {max(xs)=} {min(ys)=} {max(ys)=}')
+# min(xs)=473 max(xs)=578 min(ys)=14 max(ys)=161
+
+floor = max(ys) + 2
 
 input = [l.strip() for l in input_full]
 
@@ -33,14 +24,14 @@ input = [l.strip() for l in input_full]
 # move diagonally one step down and to the left
 # If that tile is blocked, the unit of sand attempts to instead move diagonally one step down and to the right
 
-caves = [[0 for _ in range(400)] for _ in range(200)]
+caves = [[0 for _ in range(1_000)] for _ in range(200)]
 
 cc = 0
 def add_sand():
     def can_fall(x, y):
         return caves[y+1][x] == 0 or caves[y+1][x-1] == 0 or caves[y+1][x+1] == 0
     global cc
-    x, y = 500-300, 0
+    x, y = 500, 0
     if not can_fall(x, y):
         print(cc+1)
         exit(0)
@@ -78,6 +69,6 @@ for i in range(len(caves[0])):
 
 while True:
     x, y = add_sand()
-    assert x != 500-300 or y != 0
+    assert x != 500 or y != 0
     #print(x, y)
     caves[y][x] = 1
