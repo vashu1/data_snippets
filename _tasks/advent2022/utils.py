@@ -126,32 +126,25 @@ def list_diff(x):
     return [b-a for a, b in zip(x, x[1:])]
 
 
-def get_rook_neighbours(grid, row, col, fill=None):
+def get_rook_neighbours(height, width, row, col):
     res = []
     for i in [-1, 1]:
-        if 0 <= col + i < len(grid[row]):
-            res.append(grid[row][col + i])
-        elif fill is not None:
-            res.append(fill)
+        if 0 <= col + i < width:
+            res.append((row, col + i))
     for j in [-1, 1]:
-        if 0 <= row + j < len(grid):
-            res.append(grid[row+j][col])
-        elif fill is not None:
-            res.append(fill)
+        if 0 <= row + j < height:
+            res.append((row+j, col))
     return res
 
 
-def get_neighbours(grid, row, col, dist, fill=None):
+def get_neighbours(height, width, row, col, dist):
     res = []
     for x in range(-dist, dist+1):
         for y in range(-dist, dist + 1):
             if x == 0 and y == 0:
                 continue
-            if 0 <= col + x < len(grid) and 0 <= row + y < len(grid[row]):
-                res.append(grid[row + y][col + x])
-            elif fill is not None:
-                res.append(fill)
-
+            if 0 <= col + x < width and 0 <= row + y < height:
+                res.append((row + y, col + x))
     return res
 
 

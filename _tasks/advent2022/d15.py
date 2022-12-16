@@ -1,4 +1,5 @@
 import portion as P
+from collections import defaultdict
 
 input_test = """Sensor at x=2, y=18: closest beacon is at x=-2, y=15
 Sensor at x=9, y=16: closest beacon is at x=10, y=16
@@ -31,31 +32,28 @@ for line in input:
     s, b = line.split(': ')
     data.append((parse(s),parse(b)))
 
+drop_sm_helper = defaultdict(set)
+for (sx, sy), (bx, by) in data:
+    for x, y in [(sx, sy), (bx, by)]:
+        drop_sm_helper[y].add(x)
 
 def impossible_posistions(row_y, drop_sm=True):
-    intervals = []
+    positions = P.empty()
     for (sx, sy), (bx, by) in data:
         distance_to_beacon = abs(sx - bx) + abs(sy - by)
         distance_to_row = abs(sy - row_y)
         if distance_to_row <= distance_to_beacon:
             half_width = distance_to_beacon - distance_to_row
             middle = sx
-            a = sx - half_width
-            b = sx + half_width
-            intervals.append(P.closed(a, b))
-
-    sm = P.empty()
-    for i in intervals:
-        #print(i)
-        sm = sm.union(i)
+            a = middle - half_width
+            b = middle + half_width
+            positions = positions.union(P.closed(a, b))
 
     if drop_sm:
-        for (sx, sy), (bx, by) in data:
-            for x, y in [(sx, sy), (bx, by)]:
-                if row_y == y:
-                    sm = sm.difference(P.singleton(x))
+        for x in drop_sm_helper[row_y]:
+            positions = positions.difference(P.singleton(x))
 
-    return sm
+    return positions
 
 
 def interval_len(interval):
