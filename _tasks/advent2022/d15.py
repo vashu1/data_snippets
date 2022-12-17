@@ -72,6 +72,43 @@ print(sum([interval_len(i) for i in impossible_posistions(2000000)]))  # 10  200
 
 # distress beacon must have x and y coordinates each no lower than 0 and no larger than 4000000.
 
+"""
+to walk outside the perimeter of the diamonds and find the single point not contained in any of them
+"""
+import time
+import random
+t = time.time()
+print_flag = False
+for (sx, sy), (bx, by) in data:
+    print((sx, sy), (bx, by))
+    distance_to_beacon = abs(sx - bx) + abs(sy - by)
+    for i in range(distance_to_beacon + 2):
+        dx, dy = i, distance_to_beacon + 1 - i
+        for cx in [-1, 1]:
+            for cy in [-1, 1]:
+                x, y = sx + cx * dx, sy + cy * dy
+                if x not in range(4000000 + 1) or y not in range(4000000 + 1):
+                    continue
+                print_flag = True
+                for (sx1, sy1), (bx1, by1) in data:
+                    d1 = abs(sx1 - bx1) + abs(sy1 - by1)
+                    d2 = abs(sx1 - x) + abs(sy1 - y)
+                    if d2 <= d1:
+                        print_flag = False
+                        break
+                if print_flag:
+                    print(x, y)
+                    break
+            if print_flag:
+                break
+        if print_flag:
+            break
+    if print_flag:
+        break
+
+print('time', time.time() - t)
+# or reuse part 1
+
 mx, my = 20, 20
 mx, my = 4000000, 4000000
 
