@@ -231,17 +231,15 @@ def new_index(index, delta):
 max_depth = 0
 def run_round():
     global tree, max_depth
-    c = 0
+    if tree.get_depth() > max_depth:
+        max_depth = tree.get_depth()
+        print(f'{max_depth=}')
+    if max_depth > 20:
+        max_depth = 0
+        print('rebuild tree')
+        tree = rebuild_tree(positions_)
+    #
     for leaf in positions_:
-        if tree.get_depth() > max_depth:
-            max_depth = tree.get_depth()
-            print(f'{max_depth=}')
-        #
-        c += 1
-        if max_depth > 20:
-            max_depth = 0
-            print('rebuild tree')
-            tree = rebuild_tree(positions_)
         assert tree.len == len(input)
         leaf_index = leaf.index()
         res = tree.pop_leaf(leaf_index)
@@ -275,7 +273,7 @@ KEY = 811589153
 
 positions_ = []
 tree = tree_from_arr([i * KEY for i in input], positions_)
-for _ in range(10):
+for _ in range(10000):
     run_round()
 
 print_result()
