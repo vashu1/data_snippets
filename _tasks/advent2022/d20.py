@@ -34,39 +34,33 @@ for i in range(len(input)):
     l[i].next = (i + 1) % len(input)
     l[i].prev = (i - 1) % len(input)
 
-# a b C d
-# a C b d
 
-def move_left(i):
-    b = l[i].prev
-    d = l[i].next
-    a = l[b].prev
+# several times faster than single step move()
+# 3m -> 30 sec
+def move2(i, d):
+    if d == 0:
+        return
+    a = l[i].prev
+    b = l[i].next
+    l[a].next = b
+    l[b].prev = a
+    if d > 0:
+        while d > 1:
+            b = l[b].next
+            d -= 1
+        a = b
+        b = l[a].next
+    else:
+        while d < -1:
+            a = l[a].prev
+            d += 1
+        b = a
+        a = l[b].prev
     l[a].next = i
+    l[b].prev = i
     l[i].prev = a
     l[i].next = b
-    l[b].prev = i
-    l[b].next = d
-    l[d].prev = b
 
-# a B c d
-# a c B d
-def move_right(i):
-    a = l[i].prev
-    c = l[i].next
-    d = l[c].next
-    l[a].next = c
-    l[c].prev = a
-    l[c].next = i
-    l[i].prev = c
-    l[i].next = d
-    l[d].prev = i
-
-
-def move(sign, i):
-    if sign > 0:
-        move_right(i)
-    else:
-        move_left(i)
 
 def print_l():
     a = a_ = 0
@@ -84,9 +78,7 @@ for i in range(len(input)):
     sign = +1 if v > 0 else -1
     v = abs(v) % (len(input) - 1)
     v *= sign
-    while v:
-        v -= sign
-        move(sign, i)
+    move2(i, v)
 
 
 def get_next(n):
@@ -122,9 +114,7 @@ for turn in range(10):
         sign = +1 if v > 0 else -1
         v = abs(v) % (len(input) - 1)
         v *= sign
-        while v:
-            v -= sign
-            move(sign, i)
+        move2(i, v)
 
 a = get_next(1_000)
 b = get_next(2_000)
