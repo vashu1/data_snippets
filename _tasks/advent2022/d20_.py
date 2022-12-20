@@ -72,6 +72,9 @@ class Leaf:
     def print(self, level):
         print('\t' * level, self.value)
 
+    def get_depth(self):
+        return 1
+
 
 class Tree:
     def __init__(self, left, right=None):
@@ -160,6 +163,14 @@ class Tree:
             self.right.to_arr(res)
         return res
 
+    def get_depth(self):
+        l = r = -1
+        if self.left:
+            l = self.left.get_depth()
+        if self.right:
+            r = self.right.get_depth()
+        return max(l + 1, r + 1)
+
     def print(self, level=0):
         print('\t' * level, f'{self.len=}')
         if self.left:
@@ -183,6 +194,24 @@ def tree_from_arr(arr, positions):
     r = tree_from_arr(arr[half:], positions)
     return Tree(l, r)
 
+def rebuild_tree(positions):
+    tree = tree_from_arr(positions, [])  # need to reorder leaves list
+    stack = [tree]
+    while stack:
+        v = stack.pop()
+        if isinstance(v.left, Tree):
+            stack.append(v.left)
+        if isinstance(v.right, Tree):
+            stack.append(v.right)
+        if isinstance(v.left, Leaf):
+            assert isinstance(v.left.value, Leaf)
+            v.left = v.left.value
+            v.left.parent = v
+        if isinstance(v.right, Leaf):
+            assert isinstance(v.right.value, Leaf)
+            v.right = v.right.value
+            v.right.parent = v
+    return tree
 
 
 positions_ = []
@@ -199,17 +228,20 @@ def new_index(index, delta):
     result = result % (len(input) - 1)
     return result
 
+max_depth = 0
 def run_round():
-    global tree
+    global tree, max_depth
     c = 0
     for leaf in positions_:
+        if tree.get_depth() > max_depth:
+            max_depth = tree.get_depth()
+            print(f'{max_depth=}')
         #
         c += 1
-        if c % 1_000_000 == 0:
-            exit(0)  # TODO if needed
+        if max_depth > 20:
+            max_depth = 0
             print('rebuild tree')
-            arr = tree.to_arr()
-            tree = tree_from_arr(arr, positions_)  # need reorder leaves list
+            tree = rebuild_tree(positions_)
         assert tree.len == len(input)
         leaf_index = leaf.index()
         res = tree.pop_leaf(leaf_index)
