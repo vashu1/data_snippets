@@ -1,1 +1,1 @@
-curl --cookie "session=TODO" -o d19.txt https://adventofcode.com/2022/day/19/input
+curl --cookie "session=" -o d22.txt https://adventofcode.com/2022/day/22/input
