@@ -67,3 +67,13 @@
 17:06:00 delay 0 fst 284 snd 1478
 17:07:01 delay 1 fst 286 snd 1510
 17:08:00 delay 0 fst 272 snd 1552
+17:09:01 delay 1 fst 264 snd 1589
+17:10:00 delay 0 fst 262 snd 1622
+17:11:01 delay 1 fst 275 snd 1641
+17:12:00 delay 0 fst 287 snd 1671
+17:13:01 delay 1 fst 311 snd 1696
+17:14:00 delay 0 fst 308 snd 1718
+17:15:01 delay 1 fst 307 snd 1746
+17:16:00 delay 0 fst 305 snd 1775
+17:17:01 delay 1 fst 299 snd 1812
+17:18:00 delay 0 fst 301 snd 1836

@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import sys
+import os
 
 YEAR = 2022
 DAY = 22
@@ -25,7 +26,6 @@ plt.text(0.8, 0.75, 'Bold text numbers \nnext to graphs mean \nrank at the time.
 def diff(lst):
     return [b - a for a, b in zip(lst, lst[1:])]
 
-
 fsts = []
 snds = []
 for line in open(f'{YEAR}/d{DAY}.txt').readlines():
@@ -37,7 +37,6 @@ for line in open(f'{YEAR}/d{DAY}.txt').readlines():
     fst += snd
     fsts.append(fst)
     snds.append(snd)
-
 
 diff_snds = diff(snds)
 
@@ -77,5 +76,5 @@ def plot_submissions(submissions, label, color):
 plot_submissions(fsts, 'Part 1', 'blue')
 plot_submissions(snds, 'Part 2', 'red')
 
-plt.savefig(f'advent_{YEAR}_day_{DAY}.png')
+plt.savefig(f'{YEAR}{os.sep}advent_{YEAR}_day_{DAY}.png')
 plt.show()

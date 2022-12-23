@@ -1,4 +1,4 @@
-# export ADVENT_SESSION=_paste_
+# export ADVENT_SESSION=_fill_
 # Then run:
 # python3 advent_submission_counts.py 2022 20
 
@@ -44,4 +44,4 @@ while True:
     print(f'{dt} {delay=} {fst=} {snd=}'.replace('=', ' '))
     #
     next += RESOLUTION
-    time.sleep(next - time.time())
+    time.sleep(next - time.time() - (delay if delay < 10 else 0))
