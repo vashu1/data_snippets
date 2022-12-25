@@ -84,6 +84,11 @@ def lmap(func, *iterables):
     return list(map(func, *iterables))
 
 
+def invert_dict(d):
+    assert len(d) == len(set(d.values())), f'invert_dict() - we have repeating values!'
+    return {v:k for k, v in d.items()}
+
+
 def make_grid(*dimensions: typing.List[int], fill=0):  # make_grid(2,3) = [[0, 0, 0], [0, 0, 0]]
     if len(dimensions) == 1:
         return [fill for _ in range(dimensions[0])]

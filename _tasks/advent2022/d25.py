@@ -1,3 +1,5 @@
+from utils import *
+
 MAX_DIGITS = 50
 
 input_test = """1=-0-2
@@ -20,31 +22,24 @@ input_full = open('d25.txt').readlines()
 input = [l.strip() for l in input_full]  # input_full input_test
 
 
-def decode_single(i):
-    return {
-        '=': -2,
-        '-': -1,
-        '0': 0,
-        '1': 1,
-        '2': 2,
-    }[i]
+# symbol to int
+s2i = {
+    '=': -2,
+    '-': -1,
+    '0': 0,
+    '1': 1,
+    '2': 2,
+}
 
-
-def encode_single(i):
-    return {
-        -2: '=',
-        -1: '-',
-        0: '0',
-        1: '1',
-        2: '2',
-    }[i]
+# int to symbol
+i2s = invert_dict(s2i)
 
 
 def decode(line):
     v = 1
     res = 0
     for i in reversed(line):
-        res += v * decode_single(i)
+        res += v * s2i[i]
         v *= 5
     return res
 
@@ -80,13 +75,9 @@ for line in [line.strip() for line in input]:
 print(s)
 
 # encode output
-q = None
-d = 0
-while not q:
+for d in range(0, MAX_DIGITS):
     q = encode(s, digits=d)
-    #print('d', d, 'res', q)
-    d += 1
-
-# int array to string
-s = '' .join([encode_single(v) for v in reversed(q)])
-print(s)
+    if q:
+        s = ''.join([i2s[v] for v in reversed(q)])  # int array to string
+        print(s)
+        break
