@@ -1,0 +1,22 @@
+d09 - optimise?
+d13 - add cache
+
+
+
+
+def rotated_1_left(lst):  # [1, 2, 3] -> [2, 3, 1]
+    for i in lst[1:]:
+        yield i
+    if lst:
+        yield lst[0]
+
+zip(seating, rotated_1_left(seating))
+
+
+
+import parse
+name, fly_v, fly_t, rest_t = parse.parse('{} can fly {:d} km/s for {:d} seconds, but then must rest for {:d} seconds.', line)
+
+
+import os
+txt_name = __file__.split(os.sep)[-1].replace('.py', '.txt')

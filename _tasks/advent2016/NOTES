@@ -1,0 +1,10 @@
+
+
+heading = 0, 1
+
+def turn_left():
+    global heading
+    xx, yy = heading
+    xx_ = xx * 0 - yy * 1
+    yy_ = xx * 1 + yy * 0
+    heading = xx_, yy_
