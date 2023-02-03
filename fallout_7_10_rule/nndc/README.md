@@ -53,3 +53,15 @@ for i in range(1, 300+1):
 data = [v for v in data.values() if v and v < 1e33]
 print(data)
 ```
+
+### Use output of previous step to build plot
+
+```
+v = [ _PASTE_OUTPUT_HERE_ ]
+import matplotlib.pyplot as plt
+plt.yscale('log')
+plt.xlabel('sorted isotopes')
+plt.ylabel('half life, s')
+plt.plot(sorted(v))
+plt.show()
+```
