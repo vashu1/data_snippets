@@ -24,7 +24,7 @@ module reel(outer_d, inner_d, h) {
     }
 }
 
-*translate([0,0,SZ*2/3/2]) translate([0, 50, 0]) difference() {
+translate([0,0,SZ*2/3/2]) translate([0, 50, 0]) difference() {
     union() {
         cube([3*SZ,SZ,SZ*2/3], center=true);
         translate([0,0,SZ*2/3/2]) reel(outer_d=SZ/2, inner_d=SZ/4, h=SZ/5);
@@ -35,7 +35,7 @@ module reel(outer_d, inner_d, h) {
     for(i = [-1, +1]) translate([i*SZ/2,0,0]) cylinder(d=SZ/2, h=1000, center=true);
 }
 
-*translate([0,0,SZ*2/3/2]) translate([0, -50, 0]) difference() {
+translate([0,0,SZ*2/3/2]) translate([0, -50, 0]) difference() {
     // shaft hole
     union() {
         cube([4*SZ,SZ*3/4,SZ*2/3], center=true);
