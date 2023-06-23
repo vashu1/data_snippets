@@ -60,7 +60,7 @@ class Vessel():
         y2 = self.y - math.sin(a) * self.length / 2
         for x, y in self.wake:
             window.set_at((int(x/SCALE), int(y/SCALE)), WHITE)
-        pygame.draw.line(window, BLACK, (x1 / SCALE, y1 / SCALE), (x2 / SCALE, y2 / SCALE), width=3)
+        pygame.draw.line(window, BLACK, (int(x1 / SCALE), int(y1 / SCALE)), (int(x2 / SCALE), int(y2 / SCALE)), width=3)
 
 
 ship = Vessel(RESOLUTION[0]/2*SCALE, RESOLUTION[1]*0.7*SCALE, 270, SHIP_LEN, SHIP_SPEED_MS, 0.1 / FPS)
@@ -69,7 +69,7 @@ torpedoes = []
 for i in range(TORPEDO_COUNT):
     a = random.random() * 2 * math.pi
     d = random.random() * 400 / 2
-    x = math.cos(a) * d + (1 if i % 2 == 0 else -1) * 250
+    x = math.cos(a) * d + (1 if i % 2 == 0 else -1) * 200
     y = math.sin(a) * d
     x0 = RESOLUTION[0] / 2 * SCALE
     y0 = RESOLUTION[1] / 2 * SCALE
@@ -111,7 +111,6 @@ while run:
             x = math.cos(a) * x_ + math.sin(a) * y_
             y = - math.sin(a) * x_ + math.cos(a) * y_
             if abs(x) < SHIP_LEN / 2 and abs(y) < HITBOX_W / 2:
-                print(x, y)
                 hits += 1
             else:
                 new_torpedoes.append(t)
@@ -124,7 +123,7 @@ while run:
             t.draw()
     else:
         for t in torpedoes:
-            pygame.draw.circle(window, WHITE, (t.x / SCALE, t.y / SCALE), 2)
+            pygame.draw.circle(window, WHITE, (int(t.x / SCALE), int(t.y / SCALE)), 2)
 
     msg = f'Torpedo hits: {hits}' if torpedoes_dropped else str(int(TORPEDO_DROP_TIME + start_time - time.time()))
     text_surface = my_font.render(msg, False, (0, 0, 0))
