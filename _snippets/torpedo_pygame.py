@@ -63,12 +63,12 @@ class Vessel():
         pygame.draw.line(window, BLACK, (int(x1 / SCALE), int(y1 / SCALE)), (int(x2 / SCALE), int(y2 / SCALE)), width=3)
 
 
-ship = Vessel(RESOLUTION[0]/2*SCALE, RESOLUTION[1]*0.7*SCALE, 270, SHIP_LEN, SHIP_SPEED_MS, 0.1 / FPS)
+ship = Vessel(RESOLUTION[0]/2*SCALE, RESOLUTION[1]*0.75*SCALE, 270, SHIP_LEN, SHIP_SPEED_MS, 0.1 / FPS)
 
 torpedoes = []
 for i in range(TORPEDO_COUNT):
     a = random.random() * 2 * math.pi
-    d = random.random() * 400 / 2
+    d = random.random() * 150
     x = math.cos(a) * d + (1 if i % 2 == 0 else -1) * 200
     y = math.sin(a) * d
     x0 = RESOLUTION[0] / 2 * SCALE
@@ -82,6 +82,8 @@ hits = 0
 run = True
 while run:
     clock.tick(FPS)
+    if random.random()<0.01:
+        print(f'FPS {round(clock.get_fps(), 1)}')
 
     torpedoes_dropped = (time.time() - start_time) > TORPEDO_DROP_TIME
 
