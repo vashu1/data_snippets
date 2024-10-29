@@ -1,14 +1,14 @@
 """
 Preprocess popodancev.net mirror site files after wget.
 
-# wget --mirror --page-requisites --reject-regex=.*reply.* https://www.popadancev.net
+# wget --mirror --page-requisites --reject-regex=".*reply.*" https://www.popadancev.net
 # s3:::popadancev.net http://popadancev.net.s3-website-us-east-1.amazonaws.com
 
-wget --mirror --page-requisites --reject-regex=.*reply.* https://www.popadancev.net
+wget --mirror --page-requisites --reject-regex=".*reply.*" https://www.popadancev.net
 mv www.popadancev.net www.popadancev.net_1
-wget --mirror --page-requisites --reject-regex=.*reply.* https://www.popadancev.net
+wget --mirror --page-requisites --reject-regex=".*reply.*" https://www.popadancev.net
 mv www.popadancev.net www.popadancev.net_2
-wget --mirror --page-requisites --reject-regex=.*reply.* https://www.popadancev.net
+wget --mirror --page-requisites --reject-regex=".*reply.*" https://www.popadancev.net
 mv www.popadancev.net www.popadancev.net_3
 
 rm -rf merge
@@ -81,31 +81,34 @@ def fix_comment_anchors(line):
 def fix_file(filename):
     with open(filename) as f:
         lines = f.readlines()
+    lines = drop_dynamic_elements(lines)
+    if clean_special_chars(filename) != filename:
+        os.remove(filename)
+        filename = clean_special_chars(filename)
+    for i in range(len(lines)):
+        lines[i] = clean_href(lines[i], start="href='", end="'")
+        lines[i] = clean_href(lines[i], start='href="', end='"')
+        lines[i] = lines[i].replace('https://www_popadancev_net', SITE)
+        lines[i] = lines[i].replace('https://popadancev_net', SITE)
+        lines[i] = lines[i].replace('http://popadancev_net', SITE)
+        lines[i] = lines[i].replace('http://www_popadancev_net', SITE)
+        lines[i] = lines[i].replace('www.popadancev.net', SITE)
+        lines[i] = lines[i].replace('https://www.popadancev.net', SITE)
+        lines[i] = lines[i].replace('https://popadancev.net', SITE)
+        lines[i] = lines[i].replace('http://popadancev.net/', SITE + '/')
+        lines[i] = lines[i].replace('www.popadancev.net', SITE)
+        lines[i] = lines[i].replace('http://http://', 'http://')
+        lines[i] = lines[i].replace('https://http//', 'http://')
+        lines[i] = lines[i].replace('https://http://', 'http://')
+        lines[i] = fix_comment_anchors(lines[i])
+    with open(filename, 'w') as f:
+        for line in lines:
+            _ = f.write(line)
 
-
-lines = drop_dynamic_elements(lines)
-if clean_special_chars(filename) != filename:
-    os.remove(filename)
-    filename = clean_special_chars(filename)
-for i in range(len(lines)):
-    lines[i] = clean_href(lines[i], start="href='", end="'")
-    lines[i] = clean_href(lines[i], start='href="', end='"')
-    lines[i] = lines[i].replace('https://www_popadancev_net', SITE)
-    lines[i] = lines[i].replace('https://popadancev_net', SITE)
-    lines[i] = lines[i].replace('http://popadancev_net', SITE)
-    lines[i] = lines[i].replace('http://www_popadancev_net', SITE)
-    lines[i] = lines[i].replace('www.popadancev.net', SITE)
-    lines[i] = lines[i].replace('https://popadancev.net', SITE)
-    lines[i] = lines[i].replace('http://popadancev.net/', SITE + '/')
-    lines[i] = lines[i].replace('www.popadancev.net', SITE)
-    lines[i] = lines[i].replace('http://http://', 'http://')
-    lines[i] = lines[i].replace('https://http//', 'http://')
-    lines[i] = lines[i].replace('https://http://', 'http://')
-    lines[i] = fix_comment_anchors(lines[i])
-with open(filename, 'w') as f:
-    for line in lines:
-        _ = f.write(line)
 
 for filename in glob.iglob('**/**html**', recursive=True):
     print(filename)
-    fix_file(filename)
+    try:
+        fix_file(filename)
+    except:
+        print(f'EXCEPTION on {filename}')

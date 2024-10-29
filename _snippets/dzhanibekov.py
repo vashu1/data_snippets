@@ -7,8 +7,8 @@ import matplotlib.pyplot as plt
 oxyz = (0,0,0)
 ox, oy, oz = (1, 0, 0), (0, 1, 0), (0, 0, 1)
 
-I1 = 3
-I2 = 2
+I1 = 1.2
+I2 = 1.1
 I3 = 1
 assert (I1 > I2 > I3) or (I1 < I2 < I3)  # we rotate around ox
 s = 1e-3  # perturbation
