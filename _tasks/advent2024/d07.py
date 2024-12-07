@@ -1,3 +1,5 @@
+import numpy as np
+
 lines = '''190: 10 19
 3267: 81 40 27
 83: 17 5
@@ -25,6 +27,32 @@ for line in lines:
 				acc += eq[indx + 1]
 			else:
 				acc *= eq[indx + 1]
+		if acc == v:
+			cnt += v
+			break
+
+print(cnt)
+
+
+# II
+
+
+cnt = 0
+for line in lines:
+	v, eq = line.split(': ')
+	v = int(v)
+	eq = [int(i) for i in eq.split(' ')]
+	l = len(eq) - 1
+	for i in range(3 ** l):  # max - 12 terms
+		ops = np.base_repr(i, base=3).zfill(l)
+		acc = eq[0]
+		for indx, op in enumerate(ops):
+			if ops[indx] == '0':
+				acc += eq[indx + 1]
+			elif ops[indx] == '1':
+				acc *= eq[indx + 1]
+			else:
+				acc = int(str(acc) + str(eq[indx + 1]))
 		if acc == v:
 			cnt += v
 			break
