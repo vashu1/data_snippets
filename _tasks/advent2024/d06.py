@@ -25,9 +25,9 @@ def turn_right(x, y):
 
 
 def valid(x, y):
-	if not 0 <= nx < len(lines[0]):
+	if not 0 <= x < len(lines[0]):
 		return False
-	if not 0 <= ny < len(lines):
+	if not 0 <= y < len(lines):
 		return False
 	return True
 
