@@ -1,4 +1,4 @@
-import numpy as np
+import itertools
 
 lines = '''190: 10 19
 3267: 81 40 27
@@ -43,13 +43,12 @@ for line in lines:
 	v = int(v)
 	eq = [int(i) for i in eq.split(' ')]
 	l = len(eq) - 1
-	for i in range(3 ** l):  # max - 12 terms
-		ops = np.base_repr(i, base=3).zfill(l)
+	for ops in itertools.product([0, 1, 2], repeat=l):  # max - 12 terms
 		acc = eq[0]
 		for indx, op in enumerate(ops):
-			if ops[indx] == '0':
+			if ops[indx] == 0:
 				acc += eq[indx + 1]
-			elif ops[indx] == '1':
+			elif ops[indx] == 1:
 				acc *= eq[indx + 1]
 			else:
 				acc = int(str(acc) + str(eq[indx + 1]))
