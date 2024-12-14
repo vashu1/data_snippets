@@ -29,7 +29,7 @@ lines = '''47|53
 61,13,29
 97,13,75,29,47'''
 lines = lines.split('\n')
-lines = [i.strip() for i in open('d05.txt').readlines()]
+lines = [i.strip() for i in open('inputs/d05.txt').readlines()]
 
 #s = set()
 pairs = defaultdict(set)

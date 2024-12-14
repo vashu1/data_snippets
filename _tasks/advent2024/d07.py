@@ -10,7 +10,7 @@ lines = '''190: 10 19
 21037: 9 7 18 13
 292: 11 6 16 20'''
 lines = lines.split('\n')
-lines = [i.strip() for i in open('d07.txt').readlines()]
+lines = [i.strip() for i in open('inputs/d07.txt').readlines()]
 
 
 cnt = 0

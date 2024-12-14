@@ -11,7 +11,7 @@ MIIIIIJJEE
 MIIISIJEEE
 MMMISSJEEE'''
 lines = lines.split('\n')
-lines = [i.strip() for i in open('d12.txt').readlines()]
+lines = [i.strip() for i in open('inputs/d12.txt').readlines()]
 
 
 def valid(x, y):

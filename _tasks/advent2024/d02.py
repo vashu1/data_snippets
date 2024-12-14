@@ -7,7 +7,7 @@ data = '''7 6 4 2 1
 1 3 6 7 9'''
 
 lines = data.split('\n')
-lines = [i.strip() for i in open('d02.txt').readlines()]
+lines = [i.strip() for i in open('inputs/d02.txt').readlines()]
 
 cnt = 0
 for line in lines:

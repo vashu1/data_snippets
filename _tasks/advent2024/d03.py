@@ -1,7 +1,7 @@
 import re
 
 lines = ["xmul(2,4)&mul[3,7]!^don't()_mul(5,5)+mul(32,64](mul(11,8)undo()?mul(8,5))"]
-lines = [i.strip() for i in open('d03.txt').readlines()]
+lines = [i.strip() for i in open('inputs/d03.txt').readlines()]
 
 def mul(s):
 	a, b = s.split(',')

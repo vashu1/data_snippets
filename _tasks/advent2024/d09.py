@@ -3,7 +3,7 @@ from collections import defaultdict
 
 lines = '''2333133121414131402'''
 lines = lines.split('\n')
-lines = [i.strip() for i in open('d09.txt').readlines()]
+lines = [i.strip() for i in open('inputs/d09.txt').readlines()]
 
 
 def chcksum(ss):

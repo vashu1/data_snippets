@@ -8,7 +8,7 @@ data = '''3   4
 3   3'''
 
 lines = data.split('\n')
-lines = [i.strip() for i in open('d01.txt').readlines()]
+lines = [i.strip() for i in open('inputs/d01.txt').readlines()]
 
 bs, cs = [], []
 for line in lines:

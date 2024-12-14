@@ -2,7 +2,7 @@ import functools
 
 lines = '''125 17'''
 lines = lines.split('\n')
-lines = [i.strip() for i in open('d11.txt').readlines()]
+lines = [i.strip() for i in open('inputs/d11.txt').readlines()]
 data = [int(i) for i in lines[0].split(' ')]
 
 

@@ -14,7 +14,7 @@ Button A: X+69, Y+23
 Button B: X+27, Y+71
 Prize: X=18641, Y=10279'''
 lines = lines.split('\n')
-lines = [i.strip() for i in open('d13.txt').readlines()]
+lines = [i.strip() for i in open('inputs/d13.txt').readlines()]
 
 
 def solution(ax, ay, bx, by, px, py):

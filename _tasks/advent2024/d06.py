@@ -11,7 +11,7 @@ lines = '''....#.....
 #.........
 ......#...'''
 lines = lines.split('\n')
-lines = [i.strip() for i in open('d06.txt').readlines()]
+lines = [i.strip() for i in open('inputs/d06.txt').readlines()]
 
 
 def find_guard():

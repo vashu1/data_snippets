@@ -9,7 +9,7 @@ lines = '''89010123
 01329801
 10456732'''
 lines = lines.split('\n')
-lines = [i.strip() for i in open('d10.txt').readlines()]
+lines = [i.strip() for i in open('inputs/d10.txt').readlines()]
 
 
 def valid(x, y):

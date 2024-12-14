@@ -11,7 +11,7 @@ SAXAMASAAA
 MAMMMXMMMM
 MXMXAXMASX'''
 lines = lines.split('\n')
-lines = [i.strip() for i in open('d04.txt').readlines()]
+lines = [i.strip() for i in open('inputs/d04.txt').readlines()]
 
 dirs = [
 	(0,1),  # up

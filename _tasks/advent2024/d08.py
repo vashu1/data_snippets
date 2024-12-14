@@ -13,7 +13,7 @@ lines = '''............
 ............
 ............'''
 lines = lines.split('\n')
-lines = [i.strip() for i in open('d08.txt').readlines()]
+lines = [i.strip() for i in open('inputs/d08.txt').readlines()]
 
 
 def valid(x, y):
