@@ -54,27 +54,6 @@ def run_step():
 	else:
 		assert False
 
-'''
-0,3 registers[A] //= 8
-5,4 result.append(A)
-3,0 if registers[A] != 0:
-			instruction_p = program[instruction_p + 1] - 2
-
-2,4 registers[B] = registers[B] % 8
-1,5 registers[B] ^= 5
-7,5 registers[C] = registers[A] // (2 ** registers[B] % 8)
-1,6 registers[B] ^= 6
-4,3 registers[B] ^= registers[C] % 8
-5,5 result.append(registers[B])
-3,0 if registers[A] != 0:
-			instruction_p = 0
-
-
-47792830
-2,1,3,0,5,2,3,7,1
-2,4,1,5,7,5,1,6,4,3,5,5,0,3,3,0
-'''
-
 while True:
 	assert instruction_p >= 0
 	if instruction_p >= len(program) - 1:
@@ -84,12 +63,6 @@ while True:
 
 
 print(','.join([str(i) for i in result]))
-
-# 4,6,3,5,6,3,5,2,1,0
-# 4,6,3,5,6,3,5,2,1,0
-
-# bad 0,6,1,7,3,4,0,5,1
-# good 2,1,3,0,5,2,3,7,1
 
 
 # II
@@ -137,7 +110,4 @@ while True:
 
 print(p)
 print(best)
-print(best_a)
-
-
-# 166000000
+print(best_a, oct(best_a))

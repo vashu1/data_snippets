@@ -107,7 +107,3 @@ for i in range(len(lines)):
 		if (x, y) == e:
 			break
 		step += 1
-
-
-
-
