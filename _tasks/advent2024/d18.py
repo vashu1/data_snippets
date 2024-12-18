@@ -81,11 +81,18 @@ print(step-1)
 
 # II
 
+mn, mx = 0, len(lines) - 1
+while True:
+	if mn == mx - 1:
+		print(lines[mn])
+		exit()
+	middle = mn + (mx - mn) // 2
+	print(middle)
 
-grid = [[True for _ in range(WHMAX + 1)] for _ in range(WHMAX + 1)]
-for i in range(len(lines)):
-	bx, by = [int(i) for i in lines[i].split(',')]
-	grid[by][bx] = False
+	grid = [[True for _ in range(WHMAX + 1)] for _ in range(WHMAX + 1)]
+	for i in range(middle):
+		bx, by = [int(i) for i in lines[i].split(',')]
+		grid[by][bx] = False
 
 	steps = defaultdict(set)
 	step = 1
@@ -95,8 +102,8 @@ for i in range(len(lines)):
 
 	while True:
 		if not steps[step]:
-			print(f'{bx},{by}')
-			exit()
+			mx = middle
+			break
 		for x, y in steps[step]:
 			if (x, y) == e:
 				break
@@ -105,5 +112,6 @@ for i in range(len(lines)):
 					visited.add((x_, y_))
 					steps[step+1].add((x_, y_))
 		if (x, y) == e:
+			mn = middle
 			break
 		step += 1
