@@ -18,12 +18,8 @@ lines = [i.strip() for i in open('inputs/d19.txt').readlines()]
 def check(s):
 	if not s:
 		return True
-	for i in patterns:
-		if s.startswith(i):
-			r = check(s[len(i):])
-			if r:
-				return True
-	return False
+	return any([check(s[len(i):]) for i in patterns if s.startswith(i)])
+
 
 patterns = set(lines[0].split(', '))
 cnt = 0
@@ -41,11 +37,7 @@ print(cnt)
 def count_combinations(s):
 	if not s:
 		return 1
-	res = 0
-	for i in patterns:
-		if s.startswith(i):
-			res += count_combinations(s[len(i):])
-	return res
+	return sum([count_combinations(s[len(i):]) for i in patterns if s.startswith(i)])
 
 
 cnt = 0
