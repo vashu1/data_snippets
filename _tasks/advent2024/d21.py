@@ -1,4 +1,6 @@
 from pygments import console
+import functools
+from collections import defaultdict
 
 lines = '''029A
 980A
@@ -20,6 +22,10 @@ def add(state, v):
 	x, y = state
 	xv, yv = v
 	return x + xv, y + yv
+
+
+def flatten(lst):
+    return [item for sublist in lst for item in sublist]
 
 
 class Keyboard():
@@ -80,6 +86,9 @@ class Keyboard():
 		for y, line in enumerate(self.LAYOUT):
 			#for x, ch in enumerate(line):
 			print('\t'.join([prith_char(ch, colored=self.state == (x, y)) for x, ch in enumerate(line)]))
+
+	def key_number(self):
+		return len([i for i in flatten(self.LAYOUT) if i is not None])
 
 
 class NumericKeypad(Keyboard):
@@ -172,7 +181,10 @@ exit()
 '''
 
 #print(68 * 29 + 60 * 980 + 68 * 179 + 64 * 456 + 64 * 379 , 68 * 29, 60 * 980, 68 * 179, 64 * 456, 64 * 379)
+
+'''
 cnt = 0
+solutions = {}
 for code in lines:
 	targets = {code[:i]: None for i in range(1, len(code) + 1)}
 	sequences = ['']
@@ -204,7 +216,93 @@ for code in lines:
 		if targets[code] is not None:
 			print(code, complexity(code, targets[code]), targets[code])
 			cnt += complexity(code, targets[code])
+			solutions[code] = targets[code]
 			break
 
 
 print(cnt)
+'''
+
+
+# II
+
+
+
+
+
+def one_step(DestinationClass):
+	result = defaultdict(dict)
+	for y, line in enumerate(DestinationClass.LAYOUT):
+		for x, ch in enumerate(line):
+			if ch is None:
+				continue
+			sequences = ['']
+			while True:
+				sequences = expand_sequences(sequences)
+				update = []
+				for sequence in sequences:
+					o = Output()
+					r1 = DestinationClass(o)
+					r1.state = (x, y)
+					r2 = DirectionalKeypad(r1)
+					bad = False
+					for s in sequence:
+						r2.step(s)
+						if not r2.valid_state():
+							bad = True
+							break
+						if not r2.optimal():
+							bad = True
+							break
+					if not bad:
+						update.append(sequence)
+					out = o.output()
+					if len(out) == 1 and out not in result[ch]:
+						result[ch][out] = sequence
+				sequences = update
+				if len(result[ch]) == r1.key_number():
+					break
+	return result
+
+
+dir_num_solutions = one_step(NumericKeypad)
+dir_dir_solutions = one_step(DirectionalKeypad)
+print(dir_num_solutions)
+print(dir_dir_solutions)
+
+print(68 * 29 + 60 * 980 + 68 * 179 + 64 * 456 + 64 * 379 , 68 * 29, 60 * 980, 68 * 179, 64 * 456, 64 * 379)
+
+
+def expand_code(code, dir_num_solutions):
+	state = 'A'
+	result = []
+	for ch in code:
+		result.append(dir_num_solutions[state][ch])
+		state = result[-1][-1]
+	return ''.join(result)
+
+
+@functools.lru_cache(maxsize=None)
+def calc_len(sequence, depth, start):
+	z_seq = zip(start + sequence, sequence)
+	if depth == 1:
+		return sum([len(dir_dir_solutions[a][b]) for a, b in z_seq])
+	return sum([calc_len(dir_dir_solutions[a][b], depth - 1, a) for a, b in z_seq])
+
+
+cnt = 0
+for code in lines:
+	expanded_code = expand_code(code, dir_num_solutions)
+	i = int(''.join([ch for ch in code if ch.isdigit()]))
+	cnt += i * calc_len(expanded_code, 25, 'A')
+
+print(cnt)
+print(246810588779586)
+
+'''
+In summary, there are the following keypads:
+
+    One directional keypad that you are using.
+    25 directional keypads that robots are using.
+    One numeric keypad (on a door) that a robot is using.
+'''
