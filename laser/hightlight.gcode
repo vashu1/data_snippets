@@ -1,0 +1,22 @@
+G21         ; Set units to mm
+G90         ; Absolute positioning
+M106
+G4 P20
+M107 P1
+G1 X112.6 Y0.4
+M106
+G4 P20
+M107 P1
+G1 X112.6 Y162.8
+M106
+G4 P20
+M107 P1
+G1 X3.8 Y162.8
+M106
+G4 P20
+M107 P1
+G1 X3.8 Y0.4
+M106
+G4 P20
+M107 P1
+G1 X3.8 Y0.4
