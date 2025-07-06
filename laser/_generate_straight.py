@@ -20,7 +20,7 @@ w, h = img.size
 cnt = 0
 for y in range(h):  # better to move y rarely
 	for x in range(w):
-		c = img.getpixel((x,y))
+		c = img.getpixel((w - x - 1,y))
 		c = c[0] + c[1] + c[2]
 		if c == 255 * 3:  # treshold?
 			continue
@@ -33,10 +33,8 @@ for y in range(h):  # better to move y rarely
 		print(f'G4 P{c}')
 		print('M107 P1')
 		cnt += 1
-		xy = int(xmm / step), int(ymm / step)
-		#print(x, y, xmm, ymm, xy)
 		c2 = int(c / laser_max_msec * 255)
-		img2.putpixel(xy, (c2, c2, c2))
+		img2.putpixel((w - x - 1,y), (c2, c2, c2))
 		min_x = min(xmm, min_x)
 		max_x = max(xmm, max_x)
 		min_y = min(ymm, min_y)
