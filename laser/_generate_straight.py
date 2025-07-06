@@ -45,6 +45,7 @@ print('M84         ; Disable motors')
 print(f'; Dot count {cnt}', file=sys.stderr)
 print(f'; Width {round(max_x - min_x, 1)} mm', file=sys.stderr)
 print(f'; Height {round(max_y - min_y, 1)} mm', file=sys.stderr)
+print(f'; Time {round(cnt*laser_max_msec/1000*1.1/3600, 1)} h', file=sys.stderr)
 
 with open('hightlight.gcode', 'w') as f:
 	impulse = 20
