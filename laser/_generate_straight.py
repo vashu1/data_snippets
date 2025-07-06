@@ -72,5 +72,6 @@ with open('hightlight.gcode', 'w') as f:
 	printf(f'G4 P{impulse}')
 	printf('M107 P1')
 	printf(f'G1 X{min_x} Y{min_y}')
+	printf('M84         ; Disable motors')
 
 img2.save("res.tiff", compression=None)
