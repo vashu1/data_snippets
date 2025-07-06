@@ -9,7 +9,9 @@ Check time and dot size with test_dot_size.py
 
 -
 
-Get black and white pic. Top will be at Y0, right at X0.
+Get black and white pic. GIMP - Image-Mode-Greyscale   then  Colors-BrigghtnessContrast   File-Export as...
+
+Top will be at Y0, right at X0.
 
 	python3 _generate_straight.py woman_welder_small.png > woman.gcode
 
