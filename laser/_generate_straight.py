@@ -4,7 +4,7 @@ from PIL import Image
 #fname = 'death_small.png'
 fname = sys.argv[1]
 laser_max_msec = 500
-step = 0.2
+step = 0.4
 x_mm_start, y_mm_start = 0, 0
 
 img = Image.open(fname)  # Counter({(255, 255, 255): 1065958, (0, 0, 0): 362318, (6, 0, 0): 29
@@ -42,9 +42,11 @@ for y in range(h):  # better to move y rarely
 		min_y = min(ymm, min_y)
 		max_y = max(ymm, max_y)
 
+print(f'G1 X{x_mm_start} Y{y_mm_start}')
+print('M84         ; Disable motors')
 print(f'; Dot count {cnt}', file=sys.stderr)
-print(f'; Width {max_x - min_x} mm', file=sys.stderr)
-print(f'; Height {max_y - min_y} mm', file=sys.stderr)
+print(f'; Width {round(max_x - min_x, 1)} mm', file=sys.stderr)
+print(f'; Height {round(max_y - min_y, 1)} mm', file=sys.stderr)
 
 with open('hightlight.gcode', 'w') as f:
 	impulse = 20
