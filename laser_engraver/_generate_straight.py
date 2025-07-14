@@ -4,7 +4,7 @@ from PIL import Image
 #fname = 'death_small.png'
 fname = sys.argv[1]
 laser_max_msec = 500
-step = 0.4
+step = 0.2
 x_mm_start, y_mm_start = 0, 0
 
 img = Image.open(fname)  # Counter({(255, 255, 255): 1065958, (0, 0, 0): 362318, (6, 0, 0): 29
