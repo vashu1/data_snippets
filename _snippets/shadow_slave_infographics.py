@@ -1,3 +1,4 @@
+# source data - upack epub as zip
 import os
 from collections import Counter, defaultdict
 from PIL import Image
