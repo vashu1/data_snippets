@@ -2,11 +2,12 @@ import os
 from collections import Counter, defaultdict
 from PIL import Image
 
-LINE_WIDTH = 7
+LINE_WIDTH = 7  # cause 7 is holy
 
 rank = ['Dormant', 'Awakened', 'Fallen', 'Corrupted', 'Great', 'Cursed', 'Unholy']
 hierarchy = ['Beast', 'Monster', 'Demon', 'Devil', 'Tyrant', 'Terror', 'Titan']
 rainbow = [(255, 0, 0), (255, 127, 0), (255, 255, 0), (0, 255, 0), (0, 0, 255), (75, 0, 130), (148, 0, 211)]
+rainbow_names = ['Red', 'Orange', 'Yellow', 'Green', 'Blue', 'Indigo', 'Purple']
 
 
 def load(data, path, fname):
@@ -43,3 +44,6 @@ for y in range(max_chapter):
       img.paste(rainbow[j % 7] if val else (0,0,0),(x,y,x+LINE_WIDTH-1,y+1))
 
 img.save("shadow_slave.png")
+
+for j in range(7):
+  print(hierarchy[j], rainbow_names[j])
