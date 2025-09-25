@@ -21,18 +21,20 @@ def load(data, path, fname):
             val = sum([line.lower().count(search) for line in lines])
             if val:
                 c[i*7 + j] = val
-    n = int(fname.split('_')[1])
-    if val:
-        data[n] = val
+    return c
 
 
 data = defaultdict(Counter)
 path = 'Shadow Slave/1/OEBPS/'  # load htmls
 for fname in os.listdir(path):
-    load(data, path, fname)
+    if fname in {'Fonts'}:
+        continue
+    n = int(fname.split('-')[2])
+    data[n] = load(data, path, fname)
 path = 'Shadow Slave/2/OEBPS/Text/'  # load xhtmls
 for fname in os.listdir(path):
-    load(data, path, fname)
+    n = int(fname.split('_')[1])
+    data[n] = load(data, path, fname)
 
 max_chapter = max([ch_num for ch_num, _ in data.items()])
 max_val = max([v for _, counter in data.items() for k, v in counter.most_common()])
