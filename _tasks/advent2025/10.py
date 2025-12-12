@@ -35,3 +35,47 @@ for line in data:
 	s += solution_pressed
 
 print(s)
+
+# II
+
+from z3 import *
+
+
+def parse_button2(s, joltage_len):
+	res = [0] * joltage_len
+	t = eval(s.replace(')', ',)'))
+	for i in t:
+		res[i] = 1 
+	return res
+
+
+s = 0
+for line in data:
+	_, buttons = line.split('] ')
+	buttons, joltage = buttons.split(' {')
+	joltage = [int(i) for i in joltage[:-1].split(',')]
+	joltage_len = len(joltage)
+	buttons = [parse_button2(s, joltage_len) for s in buttons.split(' ')]
+
+	opt = Int('opt')
+	btns = Ints(' '.join([f'btn{i}' for i in range(len(buttons))]))
+
+	o = Optimize()
+	o.add(opt == Sum(btns))
+	for i in range(len(btns)):
+		o.add(btns[i] >= 0)
+
+	for i in range(joltage_len):
+		eq = []
+		for j in range(len(buttons)):
+			if buttons[j][i]:
+				eq.append(btns[j])
+		o.add(Sum(eq) == joltage[i])
+
+
+	o.minimize(opt)
+
+	assert o.check() == sat
+	s += o.model()[opt].as_long()
+
+print(s)
