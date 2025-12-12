@@ -44,6 +44,9 @@ print(run(links, 'you'))
 
 # II
 
+#print(run(links, 'dac', to='fft'))  # == 0
+#print(run(links, 'dac', to='out', r=reachable(links, 'out')))  # == 3420     so it is: svr -> fft -> dac -3420-> out
+
 from collections import defaultdict
 
 test = '''svr: aaa bbb
@@ -61,6 +64,60 @@ ggg: out
 hhh: out'''
 
 
+data = test.split('\n')
+data = [s.strip() for s in open('11.txt').readlines()]
+
+links = {}
+links['out'] = []
+for line in data:
+	s, dsts = line.split(': ')
+	links[s] = dsts.split(' ')
+	assert s not in links[s]
+
+def process_graph(links, start, end):
+	revert = defaultdict(set)
+	for k in links:
+		for k2 in links[k]:
+			revert[k2].add(k)
+
+	# remove all nodes unreachable from start
+	p = {start}
+	nodes = set()
+	while p:
+		n = p.pop()
+		nodes.add(n)
+		for i in links[n]:
+			p.add(i)
+
+	for k in revert:
+		for i in set(revert[k]):
+			if i not in nodes:
+				revert[k].remove(i)
+
+	# process
+	cost = defaultdict(lambda: 0)
+	cost[start] = 1
+	process = {start}
+	while process:
+		node = process.pop()
+		for n in links[node]:
+			cost[n] += cost[node]
+			revert[n].remove(node)
+			if not revert[n]:
+				process.add(n)
+				if n == end:
+					return cost[n]
+
+
+a = process_graph(links, 'svr', 'fft')
+b = process_graph(links, 'fft', 'dac')
+c = process_graph(links, 'dac', 'out')
+print(a*b*c)
+
+
+'''
+287_039_700_129_600
+
 def reachable(links, end):
 	revert = defaultdict(list)
 	for k in links:
@@ -76,17 +133,6 @@ def reachable(links, end):
 				res_list.append(i)
 		indx += 1
 	return res_set
-
-
-data = test.split('\n')
-data = [s.strip() for s in open('11.txt').readlines()]
-
-links = {}
-links['out'] = []
-for line in data:
-	s, dsts = line.split(': ')
-	links[s] = dsts.split(' ')
-	assert s not in links[s]
 
 
 order = []
@@ -117,3 +163,4 @@ print(run(links, 'dac', to='out', r=reachable(links, 'out')))  # == 3420     so 
 #lru_cache 
 #If you want unlimited size you can use the equivalent below ( @lru_cache(maxsize=None) == @cache, it's a shortcut for the same thing.)
 #from functools import cache
+'''
