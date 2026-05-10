@@ -35,7 +35,7 @@ def make_speech_file(client: OpenAI, text: str, output_path: Path) -> None:
         model="gpt-4o-mini-tts",
         voice="coral",
         input=text,
-        instructions="Speak clearly and naturally, as in an English pronunciation lesson.",
+        instructions="Pronounce every word exactly as written. Speak clearly and naturally, as in an English pronunciation lesson. Preserve every word.",
         response_format="mp3",
     )
 
@@ -67,21 +67,38 @@ def main() -> None:
     #if not word:
     #    raise ValueError("No word provided.")
 
-    words = open('word_list.txt').readlines()
-    words = [i.strip() for i in words]
+    words = open('page9.txt').readlines()
+    words = [i.strip() for i in words][:40]
     random.shuffle(words)
 
     client = OpenAI()
 
-    for word in words:
-	    sentence = generate_sentence(client, word)
-	    #print(f"Sentence: {sentence}")
-	    safe_word = "".join(c for c in word.lower() if c.isalnum() or c in ("-", "_")) or "word"
-	    output_path = Path(f"audio/pronunciation_{safe_word}.mp3")
-	    make_speech_file(client, word + '   ' + sentence, output_path)
-	    #print(f"Saved audio: {output_path.resolve()}")
-	    play_audio(output_path)
-	    _ = input()
+    errors = 0
+    for indx, word in enumerate(words):
+        sentence = generate_sentence(client, word)
+        #print(f"Sentence: {sentence}")
+        safe_word = "".join(c for c in word.lower() if c.isalnum() or c in ("-", "_")) or "word"
+        output_path = Path(f"audio/pronunciation_{safe_word}.mp3")
+        if not output_path.is_file():
+            make_speech_file(client, word + ' ' + sentence, output_path)
+            #print(f"Saved audio: {output_path.resolve()}")
+        play_audio(output_path)
+        l = 1
+        first = True
+        while True:
+            answer = input()
+            if answer == word:
+                print(f'Correct! {len(words) - indx - 1} more...')
+                break
+            else:
+                if first:
+                    first = False
+                    errors += 1
+                print('\a')  # beep
+                print(f'Try again!  HINT:{word[:l]}{"*"*(len(word)-l)}')
+                l += 1
+
+    print(f'{errors=}')
 
 
 if __name__ == "__main__":
