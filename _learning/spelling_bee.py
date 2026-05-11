@@ -67,8 +67,8 @@ def main() -> None:
     #if not word:
     #    raise ValueError("No word provided.")
 
-    words = open('page9.txt').readlines()
-    words = [i.strip() for i in words][:40]
+    words = open('page2.txt').readlines()
+    words = [i.strip() for i in words][:30]
     random.shuffle(words)
 
     client = OpenAI()
