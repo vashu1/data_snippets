@@ -6,7 +6,7 @@ import ebooklib
 import re
 from bs4 import BeautifulSoup, NavigableString
 
-TYPOS_PER_CHAPTER = 10
+TYPOS_PER_CHAPTER = 20
 
 with open('dictionaries/words.txt') as f:
     WORDS = set([w.strip() for w in f.readlines()])
@@ -66,26 +66,26 @@ def add_typo_to_html(html):
             sentence = match.group()
             candidates.append((text_node, match.start(), match.end(), sentence))
 
+    replaced = False
     if candidates:
         text_node, start, end, old_sentence = random.choice(candidates)
-
         text = str(text_node)
-        print('\n\n', text)
         for ch in ['"', '!', '?', '.', ',', ':', ';', '-']:
             text = text.replace(ch, '')
         text = text.split(' ')
         word = random.choice(text)
-        print(word)
         if word in WORDS:
             typo = add_typo(word)
-            print(typo)
             new_text = str(text_node).replace(word, typo)
-            print(new_text)
             text_node.replace_with(new_text)
-    return str(soup)
+            replaced = True
+            print('\n\n', text)
+            print(word)
+            print(typo)
+            print(new_text)
+    return replaced, str(soup)
 
 
-# Example:
 path = '/Users/fullname/Downloads/FF11 Five Have a Wonderful Time.epub'
 book = epub.read_epub(path)
 ch = 0
@@ -93,8 +93,17 @@ for item in book.get_items_of_type(ebooklib.ITEM_DOCUMENT):
     print(f'\n\nCHAPTER {ch}')
     ch += 1
     html = item.get_content().decode("utf-8", errors="ignore")
-    for i in range(TYPOS_PER_CHAPTER):
-        html = add_typo_to_html(html)
+    replace_cnt = 0
+    total = 0
+    while True:
+        total += 1
+        if total > TYPOS_PER_CHAPTER * 2:
+            break  # lost case, empty chapter or something like that
+        replaced, html = add_typo_to_html(html)
+        if replaced:
+            replace_cnt += 1
+        if replace_cnt == TYPOS_PER_CHAPTER:
+            break
     item.set_content(html.encode("utf-8"))
 
 epub.write_epub(path.replace('.epub', '_typos.epub'), book)
